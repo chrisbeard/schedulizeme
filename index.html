@@ -62,7 +62,7 @@
 				<select id="selectLab" class="course-nav">
 				</select>
 			</div>
-			<a href="#" class="btn btn-info" id="addSection"><i class="icon-white icon-plus"></i>Add</a>
+			<a href="#" class="btn btn-info" id="submitButton"><i class="icon-white icon-plus"></i>Add</a>
 	</section>
 
 	<div class="calendar">
@@ -75,6 +75,7 @@
 	<!-- Populate department list -->  
 	<script type="text/javascript">
 		$.get('http://trump6.com/schedulizeme/api/dept.php', function(data) {
+			$('#submitButton').css('visibility', 'hidden');
 			$('#selectCourse').empty();
 			$('#selectSection').empty();
 			$('#selectLab').empty();
@@ -102,7 +103,7 @@
 		$(selectDept).on('change', function() {
 			$('#selectCourse').css('visibility', 'visible');
 			$('#selectSection').css('visibility', 'hidden');
-			$('#addSection').css('visibility', 'hidden');
+			$('#submitButton').css('visibility', 'hidden');
 			$('#selectLab').css('display', 'none');
 			$('#selectCourse').empty();
 			$('#selectSection').empty();
@@ -133,7 +134,7 @@
 		$(selectCourse).on('change', function() {
 			$('#selectSection').css('visibility', 'visible');
 			$('#selectLab').css('display', 'none');
-			$('#addSection').css('visibility', 'visible');
+			$('#submitButton').css('visibility', 'hidden');
 			$('#selectSection').empty();
 			$('#selectLab').empty();
 			var dept = $('#selectDept').val();
@@ -149,14 +150,8 @@
 				$(firstElement).attr('disabled', 'disabled');
 				select.appendChild(firstElement);
 				for (var i = 0; i < sections.length; i++) {
-					// Check first letter against labs
-
-					// Only display sections that are not 0 credits
 					var opt = sections[i];
 					if (opt["credits"] != 0) {
-						// console.log(opt["crn"] + ' ' + opt["section"] + ' is 0 credits');
-					// }
-					// else {
 						var el = document.createElement("option");
 						el.textContent = opt["days"] + ': ' + opt["beginTime"] + ' - ' + opt["endTime"];
 						el.value = opt["crn"] + opt["section"];
@@ -201,44 +196,36 @@
 				}
 				if (display) {
 					$('#selectLab').css('display', 'inline-block');
+				} else {
+					$('#submitButton').css('visibility', 'visible');
 				}
-			});
+			});			
+		});
+	</script>
 
-			// console.log(section.substring(5,6));
-			// var extension = dept + '&courseNum=' + course;
-			// $.get('http://trump6.com/schedulizeme/api/sections.php?dept=' + extension, function(data) {
-			// 	var sections = JSON.parse(data);
-			// 	for (var i = 0; i < sections.length; i++) {
-			// 		// Check first letter against labs
-
-			// 		// Only display sections that are not 0 credits
-			// 		var opt = sections[i];
-			// 		if (opt["credits"] == 0) {
-			// 			console.log(opt["crn"] + ' is 0 credits');
-			// 		}
-			// 		else {
-			// 			var el = document.createElement("option");
-			// 			el.textContent = opt["days"] + ': ' + opt["beginTime"] + ' - ' + opt["endTime"];
-			// 			el.value = opt["crn"];
-			// 			select.appendChild(el);
-			// 		}
-			// 	}
-
-			
+	<!-- Display submit button after leb is picked -->
+	<script type="text/javascript">
+		$(selectLab).on('change', function() {
+			$('#submitButton').css('visibility', 'visible');
 		});
 	</script>
 
 	<!-- Send crn to php to add course to google calendar -->
 	<script type="text/javascript">
-		$(addSection).click(function() {
+		$(submitButton).click(function() {
+
 			console.log("Button clidked");
-			var crn = $('#selectSection').val().substring(0,5);
+			var crnSection = $('#selectSection').val().substring(0,5);
+			var crnLab = $('#selectLab').val().substring(0,5);
+			if (crnLab.length() != 0) {
+				crnLab = "&crnLab=" + crnLab;
+			}
 			if (crn != "") {
-				$.get('http://trump6.com/schedulizeme/api/addEvent.php?crn=' + crn);
+				$.get('http://trump6.com/schedulizeme/api/addEvent.php?crn=' + crn + crnLab);
 				$('#cal')[0].contentWindow.location.reload(true);
 				// document.location.reload();
 			var crn = $('#selectSection').val();
-			$.get('http://trump6.com/schedulizeme/api/addEvent.php?crn=' + crn);
+			$.get('http://trump6.com/schedulizeme/api/addEvent.php?crn=' + crn + crnLab);
 			console.log("waiting...");
 			// $.delay(500)
 			var iframe = document.getElementById("#cal");
