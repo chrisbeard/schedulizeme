@@ -65,11 +65,10 @@
 			<a href="#" class="btn btn-info" id="submitButton"><i class="icon-white icon-plus"></i>Add</a>
 	</section>
 
-	<div class="calendar">
+	<!-- <div class="calendar">
 		<div class="side-spacer"></div>
-			<!-- <iframe src="https://www.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=cbeard1%40binghamton.edu&amp;color=%23853104&amp;ctz=America%2FNew_York" style=" border-width:0 " width="800" height="600" frameborder="0" scrolling="no"></iframe> -->
 			<iframe id="cal" src="https://www.google.com/calendar/embed?showTitle=0&amp;src=cbeard1%40binghamton.edu&amp;showNav=0&amp;showDate=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=0&amp;mode=WEEK&amp;height=550&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;ctz=America%2FNew_York" style=" border-width:0 " width="1100" height="550" frameborder="0" scrolling="no"></iframe>
-	</div>
+	</div> -->
 
 
 	<!-- Populate department list -->  
@@ -213,26 +212,14 @@
 	<!-- Send crn to php to add course to google calendar -->
 	<script type="text/javascript">
 		$(submitButton).click(function() {
-
-			console.log("Button clidked");
 			var crnSection = $('#selectSection').val().substring(0,5);
 			var crnLab = $('#selectLab').val().substring(0,5);
 			if (crnLab.length() != 0) {
 				crnLab = "&crnLab=" + crnLab;
 			}
-			if (crn != "") {
-				$.get('http://trump6.com/schedulizeme/api/addEvent.php?crn=' + crn + crnLab);
-				$('#cal')[0].contentWindow.location.reload(true);
-				// document.location.reload();
-			var crn = $('#selectSection').val();
+			$('#cal')[0].contentWindow.location.reload(true);
 			$.get('http://trump6.com/schedulizeme/api/addEvent.php?crn=' + crn + crnLab);
-			console.log("waiting...");
-			// $.delay(500)
-			var iframe = document.getElementById("#cal");
-			$.delay(1000);
-			iframe.src = iframe.src;
-			//document.location.reload();
-			// $('#cal').delay(2500).reload();
+			document.location.reload();
 			}
 		});
 	</script>
