@@ -235,6 +235,7 @@
 			var calWidth = 1400, calHeight = 850;
 			var dayWidth = 200;
 			var hourHeight = 60;
+            var separator = 5;
 			
 			<!-- VERTICAL LINES -->
 			for(var i = dayWidth; i < dayWidth*7; i+=dayWidth) {
@@ -290,10 +291,10 @@
 						name: crn + days[i], // unique to this specific block
 						groups: [dept + " " + courseNum], // should be dept + num because that's unique to the group of courses when deleting an entire course
 						fillStyle: colors[color],
-						x: days[i] * dayWidth, 
+						x: days[i] * dayWidth + separator, 
 						y: (calHeight-(13*hourHeight)) + (beginTimeNum-480),
 						fromCenter: false,
-						width: dayWidth,
+						width: dayWidth-separator*2,
 						height: endTimeNum-beginTimeNum,
 						cornerRadius: 3
 					});
