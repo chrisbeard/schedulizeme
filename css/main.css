@@ -57,6 +57,7 @@ body {
 
 .dropdown {
 	/*padding: 1em;*/
+text-align: left;
 }
 
 .btn {
@@ -64,6 +65,7 @@ body {
 	/*text-align: left;*/
 	width: 200px;
 }
+
 
 .dropdown-menu {
 	width: 200px;
