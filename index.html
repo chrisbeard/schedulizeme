@@ -237,6 +237,14 @@
 				$.get('http://trump6.com/schedulizeme/api/addEvent.php?crn=' + crn);
 				$('#cal')[0].contentWindow.location.reload(true);
 				// document.location.reload();
+			var crn = $('#selectSection').val();
+			$.get('http://trump6.com/schedulizeme/api/addEvent.php?crn=' + crn);
+			console.log("waiting...");
+			// $.delay(500)
+			var iframe = document.getElementById("#cal");
+			$.delay(1000);
+			iframe.src = iframe.src;
+			//document.location.reload();
 			// $('#cal').delay(2500).reload();
 			}
 		});
