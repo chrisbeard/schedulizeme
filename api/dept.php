@@ -2,9 +2,8 @@
 
 require('db.php');
 require('queries.php');
-//$_GET["section"]
 
-$STH = $DBH->query($departments);
+$STH = $DBH->query($getDepartments);
 //$STH->setFetchMode(PDO::FETCH_ASSOC);
 
 /*
@@ -18,3 +17,4 @@ $json=json_encode($results);
 echo $json;
 //echo "hello";
 ?>
+

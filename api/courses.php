@@ -2,19 +2,16 @@
 
 require('db.php');
 require('queries.php');
-//$_GET["section"]
 
-$STH = $DBH->query($departments);
-//$STH->setFetchMode(PDO::FETCH_ASSOC);
+$dept = $_GET["dept"];
 
-/*
-while($story = $STH->fetch()) {
-	echo $story['secion'];
-}
- */
+$STH = $DBH->prepare($courses);
+
+$STH->execute(array(':dept' => $dept));
 
 $results=$STH->fetchAll(PDO::FETCH_ASSOC);
 $json=json_encode($results);
 echo $json;
+
 //echo "hello";
 ?>
