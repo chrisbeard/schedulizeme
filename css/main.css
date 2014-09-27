@@ -28,7 +28,7 @@ body {
 
 .spacer {
 	/*position: absolute;*/
-	padding-top: 75px;
+	padding-top: 66px;
 }
 
 .sidebar {
@@ -45,40 +45,48 @@ body {
 	left: 0;
 }
 
+.course-nav {
+	margin-bottom: 1em;
+}
 .styled-select {
 	margin: 0 auto;
 }
 .styled-select select {
 	background: transparent;
 	border: 1px solid #bdc3c7;
-	border-radius: 0;
+	border-radius: 3px;
 	font-size: 16px;
 	height: 32px;
 	padding: 5px;
-	width: 120px;
+	width: 180px;
 	-webkit-appearance: none;
 }
 
+select option {
+	font-size: 15px;
+}
+
 #courseDept {
-	width: 120px;
-	margin: 0 auto;
+	width: 180px;
+	margin: 0 auto 1em;
 }
 #selectCourse {
 	display: block;
 	visibility: hidden;
 	text-align: center;
-	margin: 0 auto;
-	width: 120px;
+	margin: 0 auto 1em;
+	width: 180px;
 }
 #selectSection {
 	display: block;
 	visibility: hidden;
-	margin: 0 auto;
-	width: 120px;
+	margin: 0 auto 1em;
+	width: 180px;
 }
 #addSection {
 	display: inline-block;
 	visibility: hidden;
+	margin-bottom: 0 auto 1em;
 	width: 50px;
 }
 
