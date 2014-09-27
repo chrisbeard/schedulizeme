@@ -44,6 +44,8 @@ CREATE TABLE `sections` (
   `req` varchar(88) DEFAULT NULL,
   `beginTime` varchar(8) DEFAULT NULL,
   `endTime` varchar(8) DEFAULT NULL,
+  `beginTimeNum` int(4) DEFAULT NULL,
+  `endTimeNum` int(4) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3431 DEFAULT CHARSET=utf8;
