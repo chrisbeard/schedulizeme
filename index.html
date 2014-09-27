@@ -217,8 +217,12 @@
 				var endTimeNum = sections["endTimeNum"];
 				var beginTime = sections["beginTime"];
 				var endTime = sections["endTime"];
+
 				addToCalendar(dept, courseNum, crn, days, location, beginTimeNum, endTimeNum, beginTime, endTime);
 			}
+			var group = $('#selectDept').val() + " " + $('#selectCourse').val();
+			$('canvas').removeLayerGroup(group);
+			console.log(group);
 			$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnSection, func);
 			if (crnLab != null) {
 				$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnLab, func);
@@ -231,13 +235,13 @@
 	<div class = "calendar">
 		<canvas width='1400' height='850'></canvas>
 		<script type="text/javascript">
-			<!-- SIZE SETTINGS -->
+			// SIZE SETTINGS
 			var calWidth = 1400, calHeight = 850;
 			var dayWidth = 200;
 			var hourHeight = 60;
             var separator = 5;
 			
-			<!-- VERTICAL LINES -->
+			// VERTICAL LINES
 			for(var i = dayWidth; i < dayWidth*7; i+=dayWidth) {
 				$('canvas').drawLine({
 					layer: true,
@@ -249,7 +253,7 @@
 				});
 			}
 			
-			<!-- DAYS OF THE WEEK -->
+			// DAYS OF THE WEEK
 			var weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 			var dayPos = 100;
 			for(var i = 0; i < 8; i++) {
@@ -266,7 +270,7 @@
 				dayPos+=dayWidth;
 			}
 
-			<!-- LITTLE HOURLY TICK MARK THINGS -->
+			// LITTLE HOURLY TICK MARK THINGS
 			for(var i = calHeight-(12*hourHeight); i < calHeight; i+=hourHeight) {
 				for (var j = dayWidth; j < dayWidth*7; j+=dayWidth) {
 					$('canvas').drawLine({
@@ -281,11 +285,12 @@
 
 			function addToCalendar(dept, courseNum, crn, days, location, beginTimeNum, endTimeNum, beginTime, endTime) {
 
-				// <!-- POSSIBLE COLORS FOR CLASSES -->
+				// POSSIBLE COLORS FOR CLASSES
 				var colors = ["#e8efe8", "#faf1a2", "#ffe19b", "#e9d0e5", "#8ca4d4", "#bae3f7", "#c1e4dd", "#c5d9a6", "#e74c3c"];
 				var color = Math.floor((Math.random() * 9));
 				
 				for (i = 0; i < days.length; ++i) {
+					console.log(i + ' ' + dept + ' ' + courseNum);
 					$('canvas').drawRect({
 						layer: true,
 						name: crn + days[i], // unique to this specific block
