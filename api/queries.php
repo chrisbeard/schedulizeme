@@ -17,4 +17,7 @@ $getTitle = "SELECT title FROM sections WHERE crn='<crn>'";
 // // else, drop down-list with this:
 // "SELECT * FROM sections WHERE dept='<dept name>' AND num=<class num> AND credits != 0"
 
+$emailData = "SELECT title, days, beginTime, endTime, location FROM sections where crn=:crn";
+
 ?>
+
