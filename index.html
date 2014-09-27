@@ -246,7 +246,8 @@
 			for(var i = dayWidth; i < dayWidth*7; i+=dayWidth) {
 				$('canvas').drawLine({
 					layer: true,
-					strokeStyle: '#D8D8D8',
+					strokeStyle: '#bdc3c7',
+
 					strokeWidth: 1,
 					strokeDash: [1],
 					x1: i, y1: calHeight-(13*hourHeight),
@@ -264,19 +265,19 @@
 					strokeStyle: '#6E6E6E',
 					strokeWidth: 1,
 					x: dayPos, y: 30,
-					fontSize: 30,
-					fontFamily: 'Verdana, sans-serif',
+					fontSize: 26,
+					fontFamily: 'Open Sans, sans-serif',
 					text: weekdays[i]
 				});
 				dayPos+=dayWidth;
 			}
 
 			// LITTLE HOURLY TICK MARK THINGS
-			for(var i = calHeight-(12*hourHeight); i < calHeight; i+=hourHeight) {
+			for(var i = calHeight-(13*hourHeight); i < calHeight + 1; i+=hourHeight) {
 				for (var j = dayWidth; j < dayWidth*7; j+=dayWidth) {
 					$('canvas').drawLine({
 						layer: true,
-						strokeStyle: '#B0B0B0',
+						strokeStyle: '#bdc3c7',
 						strokeWidth: 1,
 						x1: j-4, y1: i,
 						x2: j+4, y2: i
