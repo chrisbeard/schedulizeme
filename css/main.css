@@ -45,14 +45,15 @@ body {
 	left: 0;
 }
 
-.course-department {
-	margin: 10px 25px;
+#courseDept {
 }
-.course-number {
-	margin: 10px 25px;
+#selectCourse {
+	/*display: none;*/
+	width: 100px;
 }
-.course-section {
-	margin: 10px 25px;
+#selectSection {
+	/*display: none;*/
+	width: 100px;
 }
 
 .dropdown {
