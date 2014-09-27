@@ -162,7 +162,10 @@
 			$.get('http://trump6.com/schedulizeme/api/addEvent.php?crn=' + crn);
 			console.log("waiting...");
 			// $.delay(500)
-			document.location.reload();
+			var iframe = document.getElementById("#cal");
+			$.delay(1000);
+			iframe.src = iframe.src;
+			//document.location.reload();
 			// $('#cal').delay(2500).reload();
 		});
 	</script>

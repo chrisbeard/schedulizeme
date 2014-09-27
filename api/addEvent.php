@@ -38,7 +38,7 @@ if (strpos($days,'W') !== false) {
 if (strpos($days,'R') !== false) {
 	mail($email, $mainSubject . " Thursday", "body");
 }
-if (strpos($days,'Y') !== false) {
+if (strpos($days,'F') !== false) {
 	mail($email, $mainSubject . " Friday", "body");
 }
 
