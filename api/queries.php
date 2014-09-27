@@ -5,7 +5,7 @@ $getClasses = "SELECT DISTINCT num, title FROM sections WHERE dept=:dept GROUP B
 $getSections = "SELECT section, days, beginTime, endTime, beginTimeNum, endTimeNum, location, instructor, credits, crn FROM sections WHERE dept=:dept AND num=:num GROUP BY section";
 $getCRN = "SELECT crn FROM sections WHERE dept=:dept AND num=:num AND section=:section";
 
-$getSpecificCRN = "SELECT crn, num, days, beginTime, endTime, beginTimeNum, endTimeNum, location, instructor, credits FROM sections WHERE crn=:crn GROUP BY crn";
+$getSpecificCRN = "SELECT crn, dept, num, days, beginTime, endTime, beginTimeNum, endTimeNum, location, instructor, credits FROM sections WHERE crn=:crn GROUP BY crn";
 // then after that you can get a whole bunch of data from the crn, for example:
 // nice nice
 $getTitle = "SELECT title FROM sections WHERE crn='<crn>'";
