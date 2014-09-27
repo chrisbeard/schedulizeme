@@ -45,12 +45,15 @@
 					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
 				</ul>
 			</div> -->
-			<select id="selectDept">
-			</select>
-			<select id="selectCourse">
-			</select>
-			<select id="selectSection">
-			</select>
+
+			<div class="styled-select">
+				<select id="selectDept">
+				</select>
+				<select id="selectCourse">
+				</select>
+				<select id="selectSection">
+				</select>
+			</div>
 	</section>
 
 
@@ -73,6 +76,7 @@
 	<!-- Populate course list -->
 	<script type="text/javascript">
 		$(selectDept).on('change', function() {
+			$('#selectCourse').css('display', 'block');
 			$('#selectCourse').empty();
 			var dept = $('#selectDept').val();
 			$.get('http://trump6.com/schedulizeme/api/courses.php?dept=' + dept, function(data) {
@@ -81,8 +85,7 @@
 				for(var i = 0; i < courses.length; i++) {
 					var opt = courses[i];
 					var el = document.createElement("option");
-					// console.log(opt["num"]);
-					el.textContent = opt["num"];
+					el.textContent = opt["num"] + ' - ' + opt["title"];
 					el.value = opt["num"];
 					select.appendChild(el);
 				}
@@ -92,18 +95,20 @@
 	
 	<!-- Populate section list -->
 	<script type="text/javascript">
-		$(selectDept).on('change', function() {
+		$(selectCourse).on('change', function() {
+			$('#selectSection').css('display', 'block');
 			$('#selectSection').empty();
 			var dept = $('#selectDept').val();
 			var course = $('#selectCourse').val();
-			$.get('http://trump6.com/schedulizeme/api/courses.php?dept=' + dept + '&courseNum=' + course, function(data) {
+			var extension = dept + '&courseNum=' + course;
+			$.get('http://trump6.com/schedulizeme/api/sections.php?dept=' + extension, function(data) {
 				var sections = JSON.parse(data);
 				var select = document.getElementById("selectSection");
 				for(var i = 0; i < sections.length; i++) {
 					var opt = sections[i];
 					var el = document.createElement("option");
 					console.log(opt["section"]);
-					el.textContent = opt["section"];
+					el.textContent = opt["days"] + ': ' + opt["beginTime"] + ' - ' + opt["endTime"];
 					el.value = opt["section"];
 					select.appendChild(el);
 				}

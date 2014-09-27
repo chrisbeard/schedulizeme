@@ -45,29 +45,30 @@ body {
 	left: 0;
 }
 
+.styled-select {
+	margin: 0 auto;
+}
+.styled-select select {
+	background: transparent;
+	border: 1px solid #bdc3c7;
+	border-radius: 0;
+	font-size: 16px;
+	height: 32px;
+	padding: 5px;
+	width: 92px;
+	-webkit-appearance: none;
+}
+
 #courseDept {
 }
 #selectCourse {
-	/*display: none;*/
+	display: none;
+	text-align: center;
+	margin: 0 auto;
 	width: 100px;
 }
 #selectSection {
-	/*display: none;*/
+	display: none;
+	margin: 0 auto;
 	width: 100px;
-}
-
-.dropdown {
-	/*padding: 1em;*/
-text-align: left;
-}
-
-.btn {
-	border-radius: 2px !important;
-	/*text-align: left;*/
-	width: 200px;
-}
-
-
-.dropdown-menu {
-	width: 200px;
 }
