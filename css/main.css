@@ -89,6 +89,11 @@ select option {
 	margin-bottom: 0 auto 1em;
 	width: 50px;
 }
+#selectLab {
+	display: none;
+	margin-bottom: 0 auto 1em;
+	width: 180px;
+}
 
 .calendar {
 	position: relative;

@@ -58,6 +58,10 @@
 				<select id="selectSection" class="course-nav">
 				</select>
 			</div>
+			<div class="styled-select">
+				<select id="selectLab" class="course-nav">
+				</select>
+			</div>
 			<a href="#" class="btn btn-info" id="addSection"><i class="icon-white icon-plus"></i>Add</a>
 	</section>
 
@@ -73,6 +77,7 @@
 		$.get('http://trump6.com/schedulizeme/api/dept.php', function(data) {
 			$('#selectCourse').empty();
 			$('#selectSection').empty();
+			$('#selectLab').empty();
 			var depts = JSON.parse(data);
 			var select = document.getElementById("selectDept");
 			var firstElement = document.createElement("option");
@@ -98,8 +103,10 @@
 			$('#selectCourse').css('visibility', 'visible');
 			$('#selectSection').css('visibility', 'hidden');
 			$('#addSection').css('visibility', 'hidden');
+			$('#selectLab').css('display', 'none');
 			$('#selectCourse').empty();
 			$('#selectSection').empty();
+			$('#selectLab').empty();
 			var dept = $('#selectDept').val();
 			$.get('http://trump6.com/schedulizeme/api/courses.php?dept=' + dept, function(data) {
 				var courses = JSON.parse(data);
@@ -125,8 +132,10 @@
 	<script type="text/javascript">
 		$(selectCourse).on('change', function() {
 			$('#selectSection').css('visibility', 'visible');
+			$('#selectLab').css('display', 'none');
 			$('#addSection').css('visibility', 'visible');
 			$('#selectSection').empty();
+			$('#selectLab').empty();
 			var dept = $('#selectDept').val();
 			var course = $('#selectCourse').val();
 			var extension = dept + '&courseNum=' + course;
@@ -139,18 +148,83 @@
 				$(firstElement).attr('selected', 'selected');
 				$(firstElement).attr('disabled', 'disabled');
 				select.appendChild(firstElement);
-				for(var i = 0; i < sections.length; i++) {
-
-					// Check number of sections that are 0 credits
+				for (var i = 0; i < sections.length; i++) {
 					// Check first letter against labs
 
+					// Only display sections that are not 0 credits
 					var opt = sections[i];
-					var el = document.createElement("option");
-					el.textContent = opt["days"] + ': ' + opt["beginTime"] + ' - ' + opt["endTime"];
-					el.value = opt["crn"];
-					select.appendChild(el);
+					if (opt["credits"] != 0) {
+						// console.log(opt["crn"] + ' ' + opt["section"] + ' is 0 credits');
+					// }
+					// else {
+						var el = document.createElement("option");
+						el.textContent = opt["days"] + ': ' + opt["beginTime"] + ' - ' + opt["endTime"];
+						el.value = opt["crn"] + opt["section"];
+						select.appendChild(el);
+					}
 				}
 			});
+		});
+	</script>
+
+	<!-- Populate lab list -->
+	<script type="text/javascript">
+		$(selectSection).on('change', function() {
+			$('#selectLab').empty();
+			var dept = $('#selectDept').val();
+			var course = $('#selectCourse').val();
+			var extension = dept + '&courseNum=' + course;
+			var section = $('#selectSection').val().substring(5,6);
+
+			$.get('http://trump6.com/schedulizeme/api/sections.php?dept=' + extension, function(data) {
+
+				var sections = JSON.parse(data);
+				var select = document.getElementById("selectLab");
+
+				var firstElement = document.createElement("option");
+				firstElement.textContent = "Choose Lab";
+				firstElement.value = "";
+				$(firstElement).attr('selected', 'selected');
+				$(firstElement).attr('disabled', 'disabled');
+				select.appendChild(firstElement);
+
+				var display = false;
+				for (var i = 0; i < sections.length; i++) {
+					var opt = sections[i];
+					if (opt["credits"] == 0 && opt["section"].substring(0,1) == section) {
+						display = true;
+						var el = document.createElement("option");
+						el.textContent = opt["days"] + ': ' + opt["beginTime"] + ' - ' + opt["endTime"];
+						el.value = opt["crn"] + opt["section"];
+						select.appendChild(el);
+					}
+				}
+				if (display) {
+					$('#selectLab').css('display', 'inline-block');
+				}
+			});
+
+			// console.log(section.substring(5,6));
+			// var extension = dept + '&courseNum=' + course;
+			// $.get('http://trump6.com/schedulizeme/api/sections.php?dept=' + extension, function(data) {
+			// 	var sections = JSON.parse(data);
+			// 	for (var i = 0; i < sections.length; i++) {
+			// 		// Check first letter against labs
+
+			// 		// Only display sections that are not 0 credits
+			// 		var opt = sections[i];
+			// 		if (opt["credits"] == 0) {
+			// 			console.log(opt["crn"] + ' is 0 credits');
+			// 		}
+			// 		else {
+			// 			var el = document.createElement("option");
+			// 			el.textContent = opt["days"] + ': ' + opt["beginTime"] + ' - ' + opt["endTime"];
+			// 			el.value = opt["crn"];
+			// 			select.appendChild(el);
+			// 		}
+			// 	}
+
+			
 		});
 	</script>
 
@@ -158,12 +232,13 @@
 	<script type="text/javascript">
 		$(addSection).click(function() {
 			console.log("Button clidked");
-			var crn = $('#selectSection').val();
-			$.get('http://trump6.com/schedulizeme/api/addEvent.php?crn=' + crn);
-			console.log("waiting...");
-			// $.delay(500)
-			document.location.reload();
+			var crn = $('#selectSection').val().substring(0,5);
+			if (crn != "") {
+				$.get('http://trump6.com/schedulizeme/api/addEvent.php?crn=' + crn);
+				$('#cal')[0].contentWindow.location.reload(true);
+				// document.location.reload();
 			// $('#cal').delay(2500).reload();
+			}
 		});
 	</script>
 
