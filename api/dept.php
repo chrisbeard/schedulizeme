@@ -14,7 +14,6 @@ while($story = $STH->fetch()) {
 
 $results=$STH->fetchAll(PDO::FETCH_ASSOC);
 $json=json_encode($results);
-header("Access-Control-Allow-Origin: *");
 echo $json;
 //echo "hello";
 ?>
