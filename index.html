@@ -47,14 +47,18 @@
 			</div> -->
 
 			<div class="styled-select">
-				<select id="selectDept">
-				</select>
-				<select id="selectCourse">
-				</select>
-				<select id="selectSection">
+				<select id="selectDept" class="course-nav">
 				</select>
 			</div>
-				<a href="#" class="btn btn-info" id="addSection"><i class="icon-white icon-plus"></i>Add</a>
+			<div class="styled-select">
+				<select id="selectCourse" class="course-nav" selected="Course">
+				</select>
+			</div>
+			<div class="styled-select">
+				<select id="selectSection" class="course-nav">
+				</select>
+			</div>
+			<a href="#" class="btn btn-info" id="addSection"><i class="icon-white icon-plus"></i>Add</a>
 	</section>
 
 	<div class="calendar">
@@ -71,6 +75,12 @@
 			$('#selectSection').empty();
 			var depts = JSON.parse(data);
 			var select = document.getElementById("selectDept");
+			var firstElement = document.createElement("option");
+			firstElement.textContent = "Choose Department";
+			firstElement.value = "";
+			$(firstElement).attr('selected', 'selected');
+			$(firstElement).attr('disabled', 'disabled');
+			select.appendChild(firstElement);
 			for(var i = 0; i < depts.length; i++) {
 				var opt = depts[i];
 				var el = document.createElement("option");
@@ -94,6 +104,12 @@
 			$.get('http://trump6.com/schedulizeme/api/courses.php?dept=' + dept, function(data) {
 				var courses = JSON.parse(data);
 				var select = document.getElementById("selectCourse");
+				var firstElement = document.createElement("option");
+				firstElement.textContent = "Choose Course";
+				firstElement.value = "";
+				$(firstElement).attr('selected', 'selected');
+				$(firstElement).attr('disabled', 'disabled');
+				select.appendChild(firstElement);
 				for(var i = 0; i < courses.length; i++) {
 					var opt = courses[i];
 					var el = document.createElement("option");
@@ -117,6 +133,12 @@
 			$.get('http://trump6.com/schedulizeme/api/sections.php?dept=' + extension, function(data) {
 				var sections = JSON.parse(data);
 				var select = document.getElementById("selectSection");
+				var firstElement = document.createElement("option");
+				firstElement.textContent = "Choose Section";
+				firstElement.value = "";
+				$(firstElement).attr('selected', 'selected');
+				$(firstElement).attr('disabled', 'disabled');
+				select.appendChild(firstElement);
 				for(var i = 0; i < sections.length; i++) {
 
 					// Check number of sections that are 0 credits
@@ -124,12 +146,20 @@
 
 					var opt = sections[i];
 					var el = document.createElement("option");
-					// console.log(opt["section"]);
 					el.textContent = opt["days"] + ': ' + opt["beginTime"] + ' - ' + opt["endTime"];
-					el.value = opt["section"];
+					el.value = opt["crn"];
 					select.appendChild(el);
 				}
 			});
+		});
+	</script>
+
+	<!-- Send crn to php to add course to google calendar -->
+	<script type="text/javascript">
+		$(addSection).click(function() {
+			console.log("Button cliked");
+			var crn = $('#selectSection').val();
+			$.get('http://trump6.com/schedulizeme/api/addEvent.php?crn=' + crn);
 		});
 	</script>
 
