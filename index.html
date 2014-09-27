@@ -234,16 +234,17 @@
 	<!-- CREATE CANVAS -->
 	<script src='jcanvas.js'></script>
 	<div class = "calendar">
-		<canvas width='1400' height='850'></canvas>
+		<canvas width='1450' height='860'></canvas> <!-- DON'T FORGET TO CHANGE THIS SHIT -->
 		<script type="text/javascript">
 			// SIZE SETTINGS
-			var calWidth = 1400, calHeight = 850;
+			var calWidth = 1450, calHeight = 850;
 			var dayWidth = 200;
 			var hourHeight = 60;
             var separator = 5;
+			var timeOffset = 50;
 			
 			// VERTICAL LINES
-			for(var i = dayWidth; i < dayWidth*7; i+=dayWidth) {
+			for(var i = dayWidth+timeOffset; i < dayWidth*7; i+=dayWidth) {
 				$('canvas').drawLine({
 					layer: true,
 					strokeStyle: '#D8D8D8',
@@ -262,8 +263,8 @@
 					layer: true,
 					fillStyle: '#6E6E6E',
 					strokeStyle: '#6E6E6E',
-					strokeWidth: 1,
-					x: dayPos, y: 30,
+					strokeWidth: 0.1,
+					x: dayPos+timeOffset, y: 30,
 					fontSize: 30,
 					fontFamily: 'Verdana, sans-serif',
 					text: weekdays[i]
@@ -273,7 +274,7 @@
 
 			// LITTLE HOURLY TICK MARK THINGS
 			for(var i = calHeight-(12*hourHeight); i < calHeight; i+=hourHeight) {
-				for (var j = dayWidth; j < dayWidth*7; j+=dayWidth) {
+				for (var j = dayWidth+timeOffset; j < dayWidth*7; j+=dayWidth) {
 					$('canvas').drawLine({
 						layer: true,
 						strokeStyle: '#B0B0B0',
@@ -286,7 +287,7 @@
 			
 			<!-- GRAY HALF-HOUR BOXES -->
 			for(var i = calHeight-(13*hourHeight); i < calHeight; i+=hourHeight) {
-				for (var j = 0; j < dayWidth*8; j+=dayWidth) {
+				for (var j = timeOffset; j < dayWidth*7; j+=dayWidth) {
 					$('canvas').drawRect({
 						layer: true,
 						fillStyle: '#F4F4F4',
@@ -297,6 +298,29 @@
 						height: hourHeight/2
 					});
 				}
+			}
+			
+			<!-- TIMES -->
+			var numberColor = "#BEBEBE";
+			for(var i = 0; i < 14; i++) {
+				var j = i+8+' ';
+				if(j > 12) {
+					j-=12;
+					j += ' pm';
+				} else {
+					j += ' am';
+				}
+				<!-- left side -->
+				$('canvas').drawText({
+					layer: true,
+					fillStyle: numberColor,
+					strokeStyle: numberColor,
+					strokeWidth: 0.1,
+					x: 25, y: (i*hourHeight)+(calHeight-(13*hourHeight)),
+					fontSize: 12,
+					fontFamily: 'Segoe UI Light, sans-serif',
+					text: j
+				});
 			}
 
 			function addToCalendar(dept, courseNum, crn, days, location, beginTimeNum, endTimeNum, beginTime, endTime) {
@@ -312,7 +336,7 @@
 						name: crn + days[i], // unique to this specific block
 						groups: [dept + " " + courseNum], // should be dept + num because that's unique to the group of courses when deleting an entire course
 						fillStyle: colors[color],
-						x: days[i] * dayWidth + separator, 
+						x: days[i] * dayWidth + separator + timeOffset, 
 						y: (calHeight-(13*hourHeight)) + (beginTimeNum-480),
 						fromCenter: false,
 						width: dayWidth-separator*2,
@@ -325,7 +349,7 @@
 						groups: [dept + " " + courseNum],
 						fillStyle: '#000',
 						strokeWidth: 2,
-						x: (days[i] * dayWidth) + (dayWidth/2), 
+						x: (days[i] * dayWidth) + (dayWidth/2) + timeOffset, 
 						y: (calHeight-(13*hourHeight)) + (beginTimeNum-480) + ((endTimeNum-beginTimeNum)/2),
 						fontSize: 14,
 						fontFamily: 'Verdana, sans-serif',
