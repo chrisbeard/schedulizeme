@@ -221,7 +221,8 @@
 				addToCalendar(dept, courseNum, crn, days, location, beginTimeNum, endTimeNum, beginTime, endTime);
 			}
 			var group = $('#selectDept').val() + " " + $('#selectCourse').val();
-			$('canvas').removeLayerGroup(group);
+			$('canvas').removeLayerGroup(group).drawLayers();
+
 			console.log(group);
 			$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnSection, func);
 			if (crnLab != null) {
