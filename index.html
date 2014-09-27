@@ -204,20 +204,20 @@
 			var func = function(data) {
 				var sections = JSON.parse(data)[0];
 				var dept = sections["dept"];
-				var location = sections["location"];
+				var courseNum = sections["num"];
+				var crn = sections["crn"];
 				var dayString = sections["days"];
 				var days = [];
 				var daysOfWeek = "MTWRFS";
 				for (i = 0; i < dayString.length; ++i) {
 					days.push(daysOfWeek.indexOf(dayString[i]));
 				}
-				// console.log(days);
-				var courseNum = sections["num"];
+				var location = sections["location"];
 				var beginTimeNum = sections["beginTimeNum"];
 				var endTimeNum = sections["endTimeNum"];
 				var beginTime = sections["beginTime"];
 				var endTime = sections["endTime"];
-				addToCalendar(dept, courseNum, days, location, beginTimeNum, endTimeNum, beginTime, endTime);
+				addToCalendar(dept, courseNum, crn, days, location, beginTimeNum, endTimeNum, beginTime, endTime);
 			}
 			$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnSection, func);
 			if (crnLab != null) {
@@ -229,15 +229,14 @@
 	<!-- CREATE CANVAS -->
 	<script src='jcanvas.js'></script>
 	<div class = "calendar">
-		<canvas width='1000' height='850'></canvas>
+		<canvas width='1200' height='850'></canvas>
 		<script type="text/javascript">
-
-		// <!-- SIZE SETTINGS -->
-			var calWidth = 1000, calHeight = 850;
+			<!-- SIZE SETTINGS -->
+			var calWidth = 1200, calHeight = 850;
 			var dayWidth = 200;
 			var hourHeight = 60;
 			
-			// <!-- VERTICAL LINES -->
+			<!-- VERTICAL LINES -->
 			for(var i = dayWidth; i < dayWidth*6; i+=dayWidth) {
 				$('canvas').drawLine({
 					layer: true,
@@ -248,16 +247,16 @@
 					x2: i, y2: calHeight,
 				});
 			}
-
-			// <!-- DAYS OF THE WEEK -->
-			var weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+			
+			<!-- DAYS OF THE WEEK -->
+			var weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 			var dayPos = 100;
-			for(var i = 0; i < 7; i++) {
+			for(var i = 0; i < 8; i++) {
 				$('canvas').drawText({
 					layer: true,
-					fillStyle: '#fff',
-					strokeStyle: '#25a',
-					strokeWidth: 2,
+					fillStyle: '#6E6E6E',
+					strokeStyle: '#6E6E6E',
+					strokeWidth: 1,
 					x: dayPos, y: 30,
 					fontSize: 30,
 					fontFamily: 'Verdana, sans-serif',
@@ -266,7 +265,7 @@
 				dayPos+=dayWidth;
 			}
 
-			// <!-- LITTLE HOURLY TICK MARK THINGS -->
+			<!-- LITTLE HOURLY TICK MARK THINGS -->
 			for(var i = calHeight-(12*hourHeight); i < calHeight; i+=hourHeight) {
 				for (var j = dayWidth; j < dayWidth*6; j+=dayWidth) {
 					$('canvas').drawLine({
@@ -279,7 +278,7 @@
 				}
 			}
 
-			function addToCalendar(dept, courseNum, days, location, beginTimeNum, endTimeNum, beginTime, endTime) {
+			function addToCalendar(dept, courseNum, crn, days, location, beginTimeNum, endTimeNum, beginTime, endTime) {
 
 				// <!-- POSSIBLE COLORS FOR CLASSES -->
 				var colors = ["#e8efe8", "#faf1a2", "#ffe19b", "#e9d0e5", "#8ca4d4", "#bae3f7", "#c1e4dd", "#c5d9a6", "#e74c3c"];
@@ -288,6 +287,8 @@
 				for (i = 0; i < days.length; ++i) {
 					$('canvas').drawRect({
 						layer: true,
+						name: crn + days[i], // unique to this specific block
+						groups: [dept + " " + courseNum], // should be dept + num because that's unique to the group of courses when deleting an entire course
 						fillStyle: colors[color],
 						x: days[i] * dayWidth, 
 						y: (calHeight-(13*hourHeight)) + (beginTimeNum-480),
@@ -295,6 +296,18 @@
 						width: dayWidth,
 						height: endTimeNum-beginTimeNum,
 						cornerRadius: 3
+					});
+					$('canvas').drawText({
+						layer: true,
+						name: crn + days[i] + 'text',
+						groups: [dept + " " + courseNum],
+						fillStyle: '#000',
+						strokeWidth: 2,
+						x: (days[i] * dayWidth) + (dayWidth/2), 
+						y: (calHeight-(13*hourHeight)) + (beginTimeNum-480) + ((endTimeNum-beginTimeNum)/2),
+						fontSize: 14,
+						fontFamily: 'Verdana, sans-serif',
+						text: dept + ' ' + courseNum + '\n' + beginTime + ' - ' + endTime + '\n' + location
 					});
 				}
 			}
