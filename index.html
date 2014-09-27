@@ -208,7 +208,7 @@
 				var crn = sections["crn"];
 				var dayString = sections["days"];
 				var days = [];
-				var daysOfWeek = "MTWRFS";
+				var daysOfWeek = "MTWRFSU";
 				for (i = 0; i < dayString.length; ++i) {
 					days.push(daysOfWeek.indexOf(dayString[i]));
 				}
@@ -237,7 +237,7 @@
 			var hourHeight = 60;
 			
 			<!-- VERTICAL LINES -->
-			for(var i = dayWidth; i < dayWidth*6; i+=dayWidth) {
+			for(var i = dayWidth; i < dayWidth*7; i+=dayWidth) {
 				$('canvas').drawLine({
 					layer: true,
 					strokeStyle: '#D8D8D8',
@@ -267,7 +267,7 @@
 
 			<!-- LITTLE HOURLY TICK MARK THINGS -->
 			for(var i = calHeight-(12*hourHeight); i < calHeight; i+=hourHeight) {
-				for (var j = dayWidth; j < dayWidth*6; j+=dayWidth) {
+				for (var j = dayWidth; j < dayWidth*7; j+=dayWidth) {
 					$('canvas').drawLine({
 						layer: true,
 						strokeStyle: '#B0B0B0',
