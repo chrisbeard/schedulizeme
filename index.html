@@ -185,7 +185,7 @@
 		});
 	</script>
 
-	<!-- Display submit button after leb is picked -->
+	<!-- Display submit button after lab is picked -->
 	<script type="text/javascript">
 		$(selectLab).on('change', function() {
 			$('#submitButton').css('visibility', 'visible');
@@ -242,7 +242,7 @@
 					layer: true,
 					strokeStyle: '#D8D8D8',
 					strokeWidth: 1,
-					strokeDash: [10],
+					strokeDash: [1],
 					x1: i, y1: calHeight-(13*hourHeight),
 					x2: i, y2: calHeight,
 				});
@@ -274,6 +274,21 @@
 						strokeWidth: 1,
 						x1: j-4, y1: i,
 						x2: j+4, y2: i
+					});
+				}
+			}
+			
+			<!-- GRAY HALF-HOUR BOXES -->
+			for(var i = calHeight-(13*hourHeight); i < calHeight; i+=hourHeight) {
+				for (var j = 0; j < dayWidth*8; j+=dayWidth) {
+					$('canvas').drawRect({
+						layer: true,
+						fillStyle: '#F4F4F4',
+						x: j, y: i,
+						opacity: 0.5,
+						fromCenter: false,
+						width: dayWidth,
+						height: hourHeight/2
 					});
 				}
 			}
