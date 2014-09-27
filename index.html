@@ -59,7 +59,8 @@
 
 	<div class="calendar">
 		<div class="side-spacer"></div>
-			<iframe src="https://www.google.com/calendar/embed?showTitle=0&amp;showNav=0&amp;showDate=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=0&amp;mode=WEEK&amp;height=550&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;ctz=America%2FNew_York" style=" border-width:0 " width="1100" height="550" frameborder="0" scrolling="no"></iframe>
+			<!-- <iframe src="https://www.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=cbeard1%40binghamton.edu&amp;color=%23853104&amp;ctz=America%2FNew_York" style=" border-width:0 " width="800" height="600" frameborder="0" scrolling="no"></iframe> -->
+			<iframe src="https://www.google.com/calendar/embed?showTitle=0&amp;src=cbeard1%40binghamton.edu&amp;showNav=0&amp;showDate=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=0&amp;mode=WEEK&amp;height=550&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;ctz=America%2FNew_York" style=" border-width:0 " width="1100" height="550" frameborder="0" scrolling="no"></iframe>
 	</div>
 
 
@@ -123,7 +124,7 @@
 
 					var opt = sections[i];
 					var el = document.createElement("option");
-					console.log(opt["section"]);
+					// console.log(opt["section"]);
 					el.textContent = opt["days"] + ': ' + opt["beginTime"] + ' - ' + opt["endTime"];
 					el.value = opt["section"];
 					select.appendChild(el);
