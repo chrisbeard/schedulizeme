@@ -64,7 +64,7 @@
 	<div class="calendar">
 		<div class="side-spacer"></div>
 			<!-- <iframe src="https://www.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=cbeard1%40binghamton.edu&amp;color=%23853104&amp;ctz=America%2FNew_York" style=" border-width:0 " width="800" height="600" frameborder="0" scrolling="no"></iframe> -->
-			<iframe src="https://www.google.com/calendar/embed?showTitle=0&amp;src=cbeard1%40binghamton.edu&amp;showNav=0&amp;showDate=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=0&amp;mode=WEEK&amp;height=550&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;ctz=America%2FNew_York" style=" border-width:0 " width="1100" height="550" frameborder="0" scrolling="no"></iframe>
+			<iframe id="cal" src="https://www.google.com/calendar/embed?showTitle=0&amp;src=cbeard1%40binghamton.edu&amp;showNav=0&amp;showDate=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=0&amp;mode=WEEK&amp;height=550&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;ctz=America%2FNew_York" style=" border-width:0 " width="1100" height="550" frameborder="0" scrolling="no"></iframe>
 	</div>
 
 
@@ -157,9 +157,13 @@
 	<!-- Send crn to php to add course to google calendar -->
 	<script type="text/javascript">
 		$(addSection).click(function() {
-			console.log("Button cliked");
+			console.log("Button clidked");
 			var crn = $('#selectSection').val();
 			$.get('http://trump6.com/schedulizeme/api/addEvent.php?crn=' + crn);
+			console.log("waiting...");
+			// $.delay(500)
+			document.location.reload();
+			// $('#cal').delay(2500).reload();
 		});
 	</script>
 
