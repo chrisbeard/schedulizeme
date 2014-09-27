@@ -54,11 +54,12 @@
 				<select id="selectSection">
 				</select>
 			</div>
+				<!-- <a href="#" class="btn btn-info" id="addSection"><i class="icon-white icon-plus"></i></a> -->
 	</section>
 
 	<div class="calendar">
 		<div class="side-spacer"></div>
-			<iframe src="https://www.google.com/calendar/embed?showTitle=0&amp;showNav=0&amp;showDate=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=0&amp;mode=WEEK&amp;height=550&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;ctz=America%2FNew_York" style=" border-width:0 " width="1000" height="550" frameborder="0" scrolling="no"></iframe>
+			<iframe src="https://www.google.com/calendar/embed?showTitle=0&amp;showNav=0&amp;showDate=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=0&amp;mode=WEEK&amp;height=550&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;ctz=America%2FNew_York" style=" border-width:0 " width="1100" height="550" frameborder="0" scrolling="no"></iframe>
 	</div>
 
 
@@ -83,10 +84,10 @@
 	<!-- Populate course list -->
 	<script type="text/javascript">
 		$(selectDept).on('change', function() {
-			$('#selectCourse').css('display', 'block');
+			$('#selectCourse').css('visibility', 'visible');
+			$('#selectSection').css('visibility', 'hidden');
 			$('#selectCourse').empty();
 			$('#selectSection').empty();
-			$('#selectSection').css('display', 'none');
 			var dept = $('#selectDept').val();
 			$.get('http://trump6.com/schedulizeme/api/courses.php?dept=' + dept, function(data) {
 				var courses = JSON.parse(data);
@@ -105,7 +106,8 @@
 	<!-- Populate section list -->
 	<script type="text/javascript">
 		$(selectCourse).on('change', function() {
-			$('#selectSection').css('display', 'block');
+			$('#selectSection').css('visibility', 'visible');
+			// $('#addSection').css('visibility', 'visible');
 			$('#selectSection').empty();
 			var dept = $('#selectDept').val();
 			var course = $('#selectCourse').val();
