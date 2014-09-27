@@ -6,6 +6,7 @@ require('queries.php');
 $email = "b7a2fcuym@myeventbot-hrd.appspotmail.com";
 
 $crn = $_GET["crn"];
+$labcrn = $_GET["labcrn"];
 
 $STH = $DBH->prepare($emailData);
 $STH->execute(array(':crn' => $crn));
