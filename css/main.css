@@ -76,10 +76,11 @@ body {
 	margin: 0 auto;
 	width: 120px;
 }
-/*#addSection {
+#addSection {
+	display: inline-block;
 	visibility: hidden;
 	width: 50px;
-}*/
+}
 
 .calendar {
 	position: relative;

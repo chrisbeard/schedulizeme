@@ -54,7 +54,7 @@
 				<select id="selectSection">
 				</select>
 			</div>
-				<!-- <a href="#" class="btn btn-info" id="addSection"><i class="icon-white icon-plus"></i></a> -->
+				<a href="#" class="btn btn-info" id="addSection"><i class="icon-white icon-plus"></i>Add</a>
 	</section>
 
 	<div class="calendar">
@@ -86,6 +86,7 @@
 		$(selectDept).on('change', function() {
 			$('#selectCourse').css('visibility', 'visible');
 			$('#selectSection').css('visibility', 'hidden');
+			$('#addSection').css('visibility', 'hidden');
 			$('#selectCourse').empty();
 			$('#selectSection').empty();
 			var dept = $('#selectDept').val();
@@ -107,7 +108,7 @@
 	<script type="text/javascript">
 		$(selectCourse).on('change', function() {
 			$('#selectSection').css('visibility', 'visible');
-			// $('#addSection').css('visibility', 'visible');
+			$('#addSection').css('visibility', 'visible');
 			$('#selectSection').empty();
 			var dept = $('#selectDept').val();
 			var course = $('#selectCourse').val();
