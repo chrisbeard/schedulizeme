@@ -56,10 +56,17 @@
 			</div>
 	</section>
 
+	<div class="calendar">
+		<div class="side-spacer"></div>
+			<iframe src="https://www.google.com/calendar/embed?showTitle=0&amp;showNav=0&amp;showDate=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=0&amp;mode=WEEK&amp;height=550&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;ctz=America%2FNew_York" style=" border-width:0 " width="1000" height="550" frameborder="0" scrolling="no"></iframe>
+	</div>
 
-	<!-- Populate department list -->
+
+	<!-- Populate department list -->  
 	<script type="text/javascript">
 		$.get('http://trump6.com/schedulizeme/api/dept.php', function(data) {
+			$('#selectCourse').empty();
+			$('#selectSection').empty();
 			var depts = JSON.parse(data);
 			var select = document.getElementById("selectDept");
 			for(var i = 0; i < depts.length; i++) {
@@ -78,6 +85,8 @@
 		$(selectDept).on('change', function() {
 			$('#selectCourse').css('display', 'block');
 			$('#selectCourse').empty();
+			$('#selectSection').empty();
+			$('#selectSection').css('display', 'none');
 			var dept = $('#selectDept').val();
 			$.get('http://trump6.com/schedulizeme/api/courses.php?dept=' + dept, function(data) {
 				var courses = JSON.parse(data);
@@ -105,6 +114,10 @@
 				var sections = JSON.parse(data);
 				var select = document.getElementById("selectSection");
 				for(var i = 0; i < sections.length; i++) {
+
+					// Check number of sections that are 0 credits
+					// Check first letter against labs
+
 					var opt = sections[i];
 					var el = document.createElement("option");
 					console.log(opt["section"]);
@@ -115,7 +128,6 @@
 			});
 		});
 	</script>
-
 
 </body>
 </html>
