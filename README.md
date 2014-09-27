@@ -1,2 +1,2 @@
-scheulizeme
+schedulizeme
 ===========
