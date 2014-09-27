@@ -1,0 +1,70 @@
+html {
+	font-size: 16px;
+	height: 100%;
+}
+body {
+	font-family: 'Open Sans', sans-serif;
+	height: 100%;
+	/*line-height: 2rem;*/
+	margin: 0;
+}
+
+.header {
+	background-color: #3498db;
+	border-bottom: 1px solid #bdc3c7;
+	line-height: 2rem;
+	text-align: center;
+	/*padding: 1em 0;*/
+	position: relative;
+	z-index: 10;
+}
+
+.title {
+	line-height: 3rem;
+	color: white;
+	margin: 0;
+	padding: .5em;
+}
+
+.spacer {
+	/*position: absolute;*/
+	padding-top: 75px;
+}
+
+.sidebar {
+	background-color: #ecf0f1;
+	border-right: 1px solid #bdc3c7;
+	float: left;
+	height: 100%;
+	overflow: auto;
+	position: absolute;
+	text-align: center;
+	width: 250px;
+	z-index: 1;
+	top: 0;
+	left: 0;
+}
+
+.course-department {
+	margin: 10px 25px;
+}
+.course-number {
+	margin: 10px 25px;
+}
+.course-section {
+	margin: 10px 25px;
+}
+
+.dropdown {
+	/*padding: 1em;*/
+}
+
+.btn {
+	border-radius: 2px !important;
+	/*text-align: left;*/
+	width: 200px;
+}
+
+.dropdown-menu {
+	width: 200px;
+}
