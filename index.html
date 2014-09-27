@@ -51,8 +51,16 @@
 				</select>
 			</div>
 			<a href="#" class="btn btn-info" id="submitButton"><i class="icon-white icon-plus"></i>Add</a>
+
+			<button type="button" class="btn btn-primary" onclick="clearEverything()" style="position:absolute;right:50%;bottom:9px;">Clear Classes</button>
 	</section>
 
+	<!-- Empty everything for starting over -->
+	<script type="text/javascript">
+	function clearEverything() {
+	$('canvas').removeLayerGroup("courses").drawLayers();
+	}
+	</script>
 
 	<!-- Populate department list -->  
 	<script type="text/javascript">
@@ -310,7 +318,7 @@
 					$('canvas').drawRect({
 						layer: true,
 						name: crn + days[i], // unique to this specific block
-						groups: [dept + " " + courseNum], // should be dept + num because that's unique to the group of courses when deleting an entire course
+						groups: [dept + " " + courseNum, "courses"], // should be dept + num because that's unique to the group of courses when deleting an entire course
 						fillStyle: colors[color],
 						x: days[i] * dayWidth + separator, 
 						y: (calHeight-(13*hourHeight)) + (beginTimeNum-480),
@@ -322,7 +330,7 @@
 					$('canvas').drawText({
 						layer: true,
 						name: crn + days[i] + 'text',
-						groups: [dept + " " + courseNum],
+						groups: [dept + " " + courseNum, "courses"],
 						fillStyle: '#000',
 						strokeWidth: 2,
 						x: (days[i] * dayWidth) + (dayWidth/2), 
