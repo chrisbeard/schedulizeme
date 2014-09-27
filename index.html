@@ -47,51 +47,69 @@
 			</div> -->
 			<select id="selectDept">
 			</select>
-
-			<div class="dropdown course-number">
-				<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-					Select Course Number
-					<span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
-					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
-					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-					<li role="presentation" class="divider"></li>
-					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
-				</ul>
-			</div>
-
-			<div class="dropdown course-section">
-				<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-					Choose Course Section
-					<span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
-					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
-					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-					<li role="presentation" class="divider"></li>
-					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
-				</ul>
-			</div>
-
+			<select id="selectCourse">
+			</select>
+			<select id="selectSection">
+			</select>
 	</section>
 
-			<script type="text/javascript">
-				$.get('http://trump6.com/schedulizeme/api/dept.php', function(data) {
-					var depts = JSON.parse(data);
-					var select = document.getElementById("selectDept");
-					for(var i = 0; i < depts.length; i++) {
-						var opt = depts[i];
-						var el = document.createElement("option");
-						console.log(opt["dept"]);
-						el.textContent = opt["dept"];
-						el.value = opt["dept"];
-						select.appendChild(el);
-					}
-				});
-			</script>
+
+	<!-- Populate department list -->
+	<script type="text/javascript">
+		$.get('http://trump6.com/schedulizeme/api/dept.php', function(data) {
+			var depts = JSON.parse(data);
+			var select = document.getElementById("selectDept");
+			for(var i = 0; i < depts.length; i++) {
+				var opt = depts[i];
+				var el = document.createElement("option");
+				// console.log(opt["dept"]);
+				el.textContent = opt["dept"];
+				el.value = opt["dept"];
+				select.appendChild(el);
+			}
+		});
+	</script>
+
+	<!-- Populate course list -->
+	<script type="text/javascript">
+		$(selectDept).on('change', function() {
+			$('#selectCourse').empty();
+			var dept = $('#selectDept').val();
+			$.get('http://trump6.com/schedulizeme/api/courses.php?dept=' + dept, function(data) {
+				var courses = JSON.parse(data);
+				var select = document.getElementById("selectCourse");
+				for(var i = 0; i < courses.length; i++) {
+					var opt = courses[i];
+					var el = document.createElement("option");
+					// console.log(opt["num"]);
+					el.textContent = opt["num"];
+					el.value = opt["num"];
+					select.appendChild(el);
+				}
+			});
+		});
+	</script>
+	
+	<!-- Populate section list -->
+	<script type="text/javascript">
+		$(selectDept).on('change', function() {
+			$('#selectSection').empty();
+			var dept = $('#selectDept').val();
+			var course = $('#selectCourse').val();
+			$.get('http://trump6.com/schedulizeme/api/courses.php?dept=' + dept + '&courseNum=' + course, function(data) {
+				var sections = JSON.parse(data);
+				var select = document.getElementById("selectSection");
+				for(var i = 0; i < sections.length; i++) {
+					var opt = sections[i];
+					var el = document.createElement("option");
+					console.log(opt["section"]);
+					el.textContent = opt["section"];
+					el.value = opt["section"];
+					select.appendChild(el);
+				}
+			});
+		});
+	</script>
 
 
 </body>
