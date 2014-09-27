@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -34,15 +34,7 @@
 		<div class="spacer"></div>
 
 			<h4>Build your schedule.</h4>
-
-			<script type="text/javascript">
-				$.getJSON('http://trump6.com/schedulizeme/api/dept.php', function(data) {
-					var depts = $.parseJSON(data)
-
-				});
-			</script>
-
-			<div class="dropdown course-department">
+			<div class="dropdown course-department" id="selectDept">
 				<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
 					Select Department
 					<span class="caret"></span>
@@ -83,6 +75,22 @@
 			</div>
 
 	</section>
+
+			<script type="text/javascript">
+				$.get('http://trump6.com/schedulizeme/api/dept.php', function(data) {
+					var depts = JSON.parse(data);
+					var select = document.getElementById("selectDept");
+					for(var i = 0; i < depts.length; i++) {
+						var opt = depts[i];
+						var el = document.createElement("option");
+						console.log(opt["dept"]);
+						el.textContent = opt["dept"];
+						el.value = opt["dept"];
+						select.appendChild(el);
+					}
+				});
+			</script>
+
 
 </body>
 </html>
