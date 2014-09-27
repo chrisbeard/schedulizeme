@@ -51,8 +51,16 @@
 				</select>
 			</div>
 			<a href="#" class="btn btn-info" id="submitButton"><i class="icon-white icon-plus"></i>Add</a>
+
+			<button type="button" class="btn btn-primary" onclick="clearEverything()" style="position:absolute;right:50%;bottom:9px;">Clear Classes</button>
 	</section>
 
+	<!-- Empty everything for starting over -->
+	<script type="text/javascript">
+	function clearEverything() {
+	$('canvas').removeLayerGroup("courses").drawLayers();
+	}
+	</script>
 
 	<!-- Populate department list -->  
 	<script type="text/javascript">
@@ -247,7 +255,8 @@
 			for(var i = dayWidth+timeOffset; i < dayWidth*7; i+=dayWidth) {
 				$('canvas').drawLine({
 					layer: true,
-					strokeStyle: '#D8D8D8',
+					strokeStyle: '#bdc3c7',
+
 					strokeWidth: 1,
 					strokeDash: [1],
 					x1: i, y1: calHeight-(13*hourHeight),
@@ -263,21 +272,33 @@
 					layer: true,
 					fillStyle: '#6E6E6E',
 					strokeStyle: '#6E6E6E',
+<<<<<<< HEAD
 					strokeWidth: 0.1,
 					x: dayPos+timeOffset, y: 30,
 					fontSize: 30,
 					fontFamily: 'Verdana, sans-serif',
+=======
+					strokeWidth: 1,
+					x: dayPos, y: 30,
+					fontSize: 26,
+					fontFamily: 'Open Sans, sans-serif',
+>>>>>>> 83594509f689953e21cd29c725d966ea29ea0794
 					text: weekdays[i]
 				});
 				dayPos+=dayWidth;
 			}
 
 			// LITTLE HOURLY TICK MARK THINGS
+<<<<<<< HEAD
 			for(var i = calHeight-(12*hourHeight); i < calHeight; i+=hourHeight) {
 				for (var j = dayWidth+timeOffset; j < dayWidth*7; j+=dayWidth) {
+=======
+			for(var i = calHeight-(13*hourHeight); i < calHeight + 1; i+=hourHeight) {
+				for (var j = dayWidth; j < dayWidth*7; j+=dayWidth) {
+>>>>>>> 83594509f689953e21cd29c725d966ea29ea0794
 					$('canvas').drawLine({
 						layer: true,
-						strokeStyle: '#B0B0B0',
+						strokeStyle: '#bdc3c7',
 						strokeWidth: 1,
 						x1: j-4, y1: i,
 						x2: j+4, y2: i
@@ -334,7 +355,7 @@
 					$('canvas').drawRect({
 						layer: true,
 						name: crn + days[i], // unique to this specific block
-						groups: [dept + " " + courseNum], // should be dept + num because that's unique to the group of courses when deleting an entire course
+						groups: [dept + " " + courseNum, "courses"], // should be dept + num because that's unique to the group of courses when deleting an entire course
 						fillStyle: colors[color],
 						x: days[i] * dayWidth + separator + timeOffset, 
 						y: (calHeight-(13*hourHeight)) + (beginTimeNum-480),
@@ -346,7 +367,7 @@
 					$('canvas').drawText({
 						layer: true,
 						name: crn + days[i] + 'text',
-						groups: [dept + " " + courseNum],
+						groups: [dept + " " + courseNum, "courses"],
 						fillStyle: '#000',
 						strokeWidth: 2,
 						x: (days[i] * dayWidth) + (dayWidth/2) + timeOffset, 
