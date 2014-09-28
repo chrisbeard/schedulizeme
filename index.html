@@ -366,6 +366,25 @@
 				}
 			}
 		</script>
+
+		<script type="text/javascript">
+	// Original JavaScript code by Chirp Internet: www.chirp.com.au
+	// Please acknowledge use of this code by including this header.
+	function getCookie(name)
+	{
+		 var re = new RegExp(name + "=([^;]+)");
+	         var value = re.exec(document.cookie);
+		 return (value != null) ? unescape(value[1]) : null;
+	}
+
+		var CRNs=[62345, 12345, 12345];
+		var jsonCRNs=JSON.stringify(CRNs);
+		document.cookie="CRNs=" + jsonCRNs; //can also be just +CRNs
+		console.log(document.cookie);
+
+		console.log(getCookie("CRNs"));
+
+		</script>
 	<div>
 
 </body>
