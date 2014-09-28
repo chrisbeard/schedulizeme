@@ -13,10 +13,10 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link rel="stylesheet" href="css/main.css">
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
 	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="css/main.css">
 
 	<!--[if lt IE 9]>
 	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -50,22 +50,34 @@
 				<select id="selectLab" class="course-nav">
 				</select>
 			</div>
-			<a href="#" class="btn btn-info" id="submitButton"><i class="icon-white icon-plus"></i>Add</a>
+			<a href="#" class="btn btn-success" id="submitButton"><i class="icon-white icon-plus"></i>Add</a>
 
-			<button type="button" class="btn btn-primary" onclick="clearEverything()" style="position:absolute;right:50%;bottom:9px;">Clear Classes</button>
+			<button type="button" class="btn btn-danger btn-small button-clear" onclick="clearEverything()">Clear Selections</button>
 	</section>
 
-	<!-- Empty everything for starting over -->
+	<!-- Clear selected courses -->
 	<script type="text/javascript">
-	function clearEverything() {
-	$('canvas').removeLayerGroup("courses").drawLayers();
-	}
+		function clearEverything() {
+			$('canvas').removeLayerGroup("courses").drawLayers();
+
+			// Not going to reset the search fields
+			// $('#selectCourse').css('visibility', 'hidden');
+			// $('#selectSection').css('visibility', 'hidden');
+			// $('#submitButton').css('visibility', 'hidden');
+			// $('#selectLab').css('display', 'none');
+			// $('#selectCourse').empty();
+			// $('#selectSection').empty();
+			// $('#selectLab').empty();
+		}
 	</script>
 
 	<!-- Populate department list -->  
 	<script type="text/javascript">
 		$.get('http://trump6.com/schedulizeme/api/dept.php', function(data) {
+			$('#selectCourse').css('visibility', 'hidden');
+			$('#selectSection').css('visibility', 'hidden');
 			$('#submitButton').css('visibility', 'hidden');
+			$('#selectLab').css('display', 'none');
 			$('#selectCourse').empty();
 			$('#selectSection').empty();
 			$('#selectLab').empty();
@@ -248,7 +260,7 @@
 			var calWidth = 1450, calHeight = 850;
 			var dayWidth = 200;
 			var hourHeight = 60;
-            var separator = 5;
+      var separator = 5;
 			var timeOffset = 50;
 			
 			// VERTICAL LINES
@@ -273,7 +285,7 @@
 					strokeStyle: '#6E6E6E',
 					strokeWidth: 0.1,
 					x: dayPos+timeOffset, y: 30,
-					fontSize: 30,
+					fontSize: 26,
 					fontFamily: 'Open Sans, sans-serif',
 					text: weekdays[i]
 				});
