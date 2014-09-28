@@ -74,10 +74,12 @@ CREDITS
 			while (c.charAt(0)==' ') c = c.substring(1,c.length);
 			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
 		}
-		return null; }
+		return null;
+	}
 
 	var cookieInput = readCookie("CRNs");
-
+	console.log(cookieInput);
+	//here put those CRNs back on the canvas
 	</script>
 
 	<!-- Cookie functions -->
@@ -105,7 +107,7 @@ CREDITS
 
 		console.log(getCookie("CRNs"));
 */
-		</script>
+	</script>
 	
 	<!-- Clear selected courses -->
 	<script type="text/javascript">
@@ -268,9 +270,9 @@ CREDITS
 	<script type="text/javascript">
 		$(submitButton).click(function() {
 			var crnSection = $('#selectSection').val().substring(0,5);
-			cookieAdd(crnSection);
+			cookieAdd(crnSection); //keep track of added classes
 			var crnLab = $('#selectLab').val();
-			cookieAdd(crnLab);
+			cookieAdd(crnLab); //keep track of added classes
 			if (crnLab != null) {
 				console.log(crnLab);
 				crnLab = crnLab.substring(0,5);
