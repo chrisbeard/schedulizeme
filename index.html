@@ -39,7 +39,7 @@ CREDITS
 
 		<div class="spacer"></div>
 
-		<h2>Build your schedule</h2>
+		<h2 style="padding-top:15px">Build your schedule.</h2>
 
 		<div id="course-list"></div>
 		<div id="spacer2"></div>
@@ -76,12 +76,26 @@ CREDITS
 				<div class="styled-select">
 					<input type="time" id="inputBeginTime" class="custom-nav" value="00:00:00">
 				</div>
-				to
+				-
 				<div class="styled-select">
 					<input type="time" id="inputEndTime" class="custom-nav" value="00:00:00">
 				</div>
 				<div class="styled-select">
 					<input type="text" id="inputLocation" placeholder="Location" class="custom-nav"></input>
+				</div>
+				<div width="50%">
+					<div>
+						<input type="checkbox" name="day" value="Monday" />
+						<input type="checkbox" name="day" value="Tuesday" />
+						<input type="checkbox" name="day" value="Wednesday" />
+						<input type="checkbox" name="day" value="Thursday" />
+						<input type="checkbox" name="day" value="Friday" />
+						<input type="checkbox" name="day" value="Saturday" />
+						<input type="checkbox" name="day" value="Sunday" />
+					</div>
+					<div style="letter-spacing: 2px;">
+						M T W T F S S
+					</div>
 				</div>
 				<a href="#" class="btn btn-info" id="customSubmitButton"><i class="icon-white icon-plus"></i>Add</a>
 			</span>
@@ -91,7 +105,7 @@ CREDITS
 			<h3 id="download" class="sidebaroption">DOWNLOAD SCHEDULE</h3>
 			<span id="hiddenDownload">
 				<a href="javascript:generatePDF()" class="button">.pdf version</a><br />
-				.csv version
+				<a href="javascript:generateCSV()">.csv version</a>
 			</span>
 		</div>
 
@@ -113,11 +127,38 @@ CREDITS
 			var doc = new jsPDF("landscape");
 			console.log(image);
 			doc.addImage(image, 'PNG', 15, 20, 270, 160);
-			doc.setFont('times');
+			doc.setFont('helvetica');
+			doc.setFontSize(14);
 			doc.text('Schedulize Me', 24, 205);
 			var iconuri = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAABmJLR0QA/wD/AP+gvaeTAAAEOUlEQVR42u3bQWgjVRzH8d97M91QdNEqYi11UVgWoZQ2SbtYCoJgrScPFRbBk0cvHgR1L4LiZb1YUPAi7rmIVkEQd6EnkdKkmbgtiJSKykrIiuyCutqY5v09WEuXbRJENt3MfD/HzGseffPNZDKZOB2BYrF4wjlbNNNjew99aaZXkiTZZv7eckex8yX7WtLQjVvsahy3JtbWNn7K5vy65n00US6XL/dyf/ieF+ds8ZB/XpK7Z3d3YDG782sohPB2r/dHzwMw01yHrXPMn/IAJB3vsO0u5k9/ALiNEAABgABAACAAEACypu2l4EKhcNJ7LZhpXtKDkkYk3cGS9YXrkmqSLjunCyFoud33DDcFMD09PRzC7puSe15SxFqmQkvS+TgeeG1tbe1K2wCmp/NPhOCWJN3LmqXSLyHYs9VqdeWmAKampmbNwoqkHOuUao0Q7PFqtbq6H0A+nx/xXonk7md9MqHufZQvl8t1L0lR5N5i52fKcAi75yTJnT49carVir7hhC97J4ZmesS3Wv4MOz+TIklnYsk92WXgz2Z6sdlsXtzc3Lz2f2ctFgvWaXulktzS29SyMP/4+PhQLhfPm7l3JN3XbpxzNhdLeqjTk5nphSRJlnnB9I+9F+pSsVhsSfZh+5HuYS9puNOTOee+YEn7U7PZ/LzLkAe8pIHOh6TKHyxlf9rY2LjeZcgxvgzKOAIgABAACKCHfu+w7VfmT30AbqXDxpVsz+8uZuEIcFbSIVcU7WoUtc5meX7v/UupD6BSqXwruUnntCzpt38Oe+4j7+PJUunSVhbnN9PH3seTvf5lsCS5o742jlur2/7lUwCfAkAAIAAQAAgABAACAAGAAEAAIAAQAAgABIBUins9Ybfvp7v5r/cnpH0+jgAgABAACAAEAAIAAYAAQAAgABAAuuC3gSnHbwPBWwAIAAQAAgABgABwAPcE9vl8HAFAACAAEAAIAAQAAgABgABAACAAdME9gSnHPYHgLQAEAAIAAYAAQAA4gHsC+3w+jgAgABAACAAEAAIAAYAAQAAgABAAuuCewJTjnkDwFgACAAGAAEAAIAAQAAgABAACIACWgABAACAAEACyGcBfnQaMjY3dyTL1p9nZ2eNdhjS8pHqnEYODx+ZZyv60s7PzVJch9VjSj5JOtBth5t4rFApRLpf7bHV19U+W9fY3MzMz2Gg0npbs3c4j7XtXLOZfldw5li2L3Ms+isInklosRua0zOxTXypd2pJ0nvXI3Kv//SRJtr0khWCvS3aFRcmMuvf+jf3rANVqteZc9IykBmuTeo0QbKFcLtf3A5Ck9fX1r5zzM3ufCpBOP3gfHq1Wq6v/PhAd3Fqr1eqjo6NLZuFuyU2IK4WpOeGT9EEcDzxXKlW+u+FMoN1fFAqFk95rwUzzkjsl2QhB9I0guZpkW87pQghaTpJk+7CBfwOk653RqmHn7wAAAABJRU5ErkJggg==';
-			doc.addImage(iconuri, 'PNG', 17, 200, 5, 5);
+			doc.addImage(iconuri, 'PNG', 17, 200.5, 5, 5);
 			doc.save('SchedulizeMe.pdf');
+		}
+		function generateCSV() {
+			var CSVstring = "";
+			/*TO DO: add Location*/
+			/* also these will be populated with the actual dates*/
+			var currentDate = new Date("January 27, 2014");
+			var endDate = new Date("May 9, 2014");
+			CSVstring += "Subject, Start Date, Start Time, End Date, End Time\n";
+			//$('#course-list').children().each(function(index, value) { // for each course
+			jQuery.each($('#course-list').children(), function(index, value) {
+				var days = 'MWF'; // change this
+				for(var i = 0; i < days.length; i++) { // for each day the class is on
+					while(currentDate <= endDate) { // for each week throughout the semester
+						var beginTime = jQuery.data(value, 'beginTimeNum');
+						var endTime = jQuery.data(value, 'endTimeNum');
+						CSVstring += (this.id).replace('_', ' ') + ', ' + currentDate.toLocaleDateString() + ', ' + '10:50:00 AM' + ', ' + currentDate.toLocaleDateString() + ', ' + '11:50:00 AM';
+						CSVstring += '\n'; // newline between entries
+						currentDate.setDate(currentDate.getDate()+7)
+						currentDate.setDate(currentDate.getDate()+7)
+					}
+				}
+			});
+			//$.post("createCSV.php", {input: CSVstring}, function(returned_data){
+				//console.log(returned_data); //or do whatever you like with the variable
+			//});
+			console.log(CSVstring);
 		}
 	</script>
 
@@ -172,7 +213,7 @@ CREDITS
 	<!-- Populate course list -->
 	<script type="text/javascript">
 		$(selectDept).on('change', function() {
-			console.log("Department start");
+			// console.log("Department start");
 			$('#selectCourse').css('visibility', 'visible');
 			$('#selectSection').css('visibility', 'hidden');
 			$('#submitButton').css('visibility', 'hidden');
@@ -196,17 +237,17 @@ CREDITS
 					el.textContent = opt["num"] + ' - ' + opt["title"];
 					el.value = opt["num"];
 					select.appendChild(el);
-					console.log(el.value);
+					// console.log(el.value);
 				}
 			});
-			console.log("Department end");
+			// console.log("Department end");
 		});
 	</script>
 	
 	<!-- Populate section list -->
 	<script type="text/javascript">
 		$(selectCourse).on('change', function() {
-			console.log("Course change");
+			// console.log("Course change");
 			$('#selectSection').css('visibility', 'visible');
 			$('#selectLab').css('display', 'none');
 			$('#submitButton').css('visibility', 'hidden');
@@ -234,22 +275,21 @@ CREDITS
 					}
 				}
 			});
-			console.log("Course change done");
+			// console.log("Course change done");
 		});
 	</script>
 
 	<!-- Populate lab list -->
 	<script type="text/javascript">
 		$(selectSection).on('change', function() {
-			console.log("Section change");
+			// console.log("Section change");
 			$('#selectLab').empty();
 			var dept = $('#selectDept').val();
 			var course = $('#selectCourse').val();
 			var extension = dept + '&courseNum=' + course;
-			console.log($('#selectSection').val());
+			// console.log($('#selectSection').val());
 			var section = $('#selectSection').val().substring(5,6);
             $('#submitButton').css('visibility', 'hidden');
-
 
 			$.get('http://trump6.com/schedulizeme/api/sections.php?dept=' + extension, function(data) {
 
@@ -280,7 +320,7 @@ CREDITS
 					$('#submitButton').css('visibility', 'visible');
 				}
 			});			
-			console.log("Section change done");
+			// console.log("Section change done");
 		});
 	</script>
 
@@ -332,7 +372,8 @@ CREDITS
 			var dept = $('#selectDept').val();
 			var course = $('#selectCourse').val();
 			var content = [ $('<a href="#" class="btn btn-success picked-course">' + $('#selectDept').val() + " " + $('#selectCourse').val() + '</a>'), $('<a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>') ];
-			var container = $('<div id=' + group + ' class="course-row"></div>');
+			// EDITED HERE "var container = $('<div id=' + group + ' class="course-row"></div>');"
+			var container = $('<div id=' + group + ' data-days=' + $('#selectSection').val() + ' class="course-row"></div>');
 			$.each(content, function(i,val) {
 			    container.append(val);
 			});
@@ -341,6 +382,33 @@ CREDITS
 			var num = $('#selectCourse').val();
 			var section = $('#selectSection').val();
 			var lab = $('#selectLab').val();
+
+			var beginTimeNum = 0;
+			var endTimeNum = 0;
+			var beginTimeNumLab = null;
+			var endTimeNumLab = null;
+			console.log(crnSection + ' ' + crnLab);
+			$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnSection, function(data) {
+				var sections = JSON.parse(data);
+				jQuery.data(container, "beginTimeNum", sections[0]["beginTimeNum"]);
+				jQuery.data(container, "endTimeNum", sections[0]["endTimeNum"]);
+				// console.log(beginTimeNum);
+				// console.log(endTimeNum);
+			});
+
+			if (crnLab != null) {
+				$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnLab, function(data) {
+					var sections = JSON.parse(data);
+					jQuery.data(container, "beginTimeNumLab", sections[0]["beginTimeNum"]);
+					jQuery.data(container, "endTimeNumLab", sections[0]["endTimeNum"]);
+					// console.log(beginTimeNumLab);
+					// console.log(endTimeNumLab);
+				});
+			}
+			else {
+				jQuery.data(container, "beginTimeNumLab", null);
+				jQuery.data(container, "endTimeNumLab", null);
+			}
 
 			content[0].click(function() {
 				var time = 150;
@@ -368,13 +436,12 @@ CREDITS
 						}, time);
 					}, time);
 				}, time);
-				});
+			});
 			content[1].click(function() {
 				$('canvas').removeLayerGroup(group).drawLayers();
 				container.remove();
-		});
+			});
 
-			//console.log(group);
 			$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnSection, func);
 			if (crnLab != null) {
 				$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnLab, func);
@@ -404,11 +471,11 @@ CREDITS
 	
 	if (!!cookieInput) {
 		console.log(cookieInput.length);
-	for(var i = 0; i < cookieInput.length/5; i++) {
-		console.log(cookieInput[i]);
-		$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + cookieInput[i], func);
-
-	} }
+		for(var i = 0; i < cookieInput.length/5; i++) {
+			console.log(cookieInput[i]);
+			$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + cookieInput[i], func);
+		}
+	}
 
 	function cookieAdd(crn) {
 		fullList.push(crn);

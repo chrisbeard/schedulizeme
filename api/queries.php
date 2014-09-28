@@ -9,6 +9,7 @@ $getSpecificCRN = "SELECT crn, dept, num, days, beginTime, endTime, beginTimeNum
 // then after that you can get a whole bunch of data from the crn, for example:
 // nice nice
 $getTitle = "SELECT title FROM sections WHERE crn='<crn>'";
+$getDays = "SELECT days FROM sections WHERE crn=:crn";
 
 // this returns the number of 0 credit classes in that department and course number (ie., labs)
 // "SELECT COUNT(*) FROM sections WHERE dept='<dept name>' AND num=<class num> AND credits = 0"
