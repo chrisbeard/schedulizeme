@@ -95,16 +95,19 @@ CREDITS
 			<button type="button" class="btn btn-danger btn-small button-clear" onclick="clearEverything()">Clear Selections</button>
 	</section>
 	
-	<script type="text/javascript" src="/jspdf/jspdf.js"></script>
-	<script type="text/javascript" src="/jspdf/jspdf.plugin.standard_fonts_metrics.js"></script> 
-	<script type="text/javascript" src="/jspdf/jspdf.plugin.split_text_to_size.js"></script>               
-	<script type="text/javascript" src="/jspdf/jspdf.plugin.from_html.js"></script>
+	<script type="text/javascript" src="jspdf/jspdf.js"></script>
+	<script type="text/javascript" src="jspdf/jspdf.plugin.standard_fonts_metrics.js"></script> 
+	<script type="text/javascript" src="jspdf/jspdf.plugin.split_text_to_size.js"></script>               
+	<script type="text/javascript" src="jspdf/jspdf.plugin.from_html.js"></script>
+	<script type="text/javascript" src="jspdf/jspdf.plugin.addImage.js"></script>
 	<script type="text/javascript">
 		function generatePDF() {
 			var image = $('canvas').getCanvasImage('png');
-			var doc = new jsPDF("landscape", "mm", "a4");
-			doc.addImage(image, 'PNG', 15, 40, 180, 160);
-			doc.output('dataurl');
+			var doc = new jsPDF("landscape");
+			console.log(image);
+			doc.addImage(image, 'png', 15, 40, 180, 160);
+			//doc.output('dataurl');
+			var dataURL = canvas.toDataURL();
 		}
 	</script>
 
@@ -328,6 +331,7 @@ CREDITS
 
 	var cookieInput = readCookie("CRNs");
 	console.log("poop" + cookieInput);
+	// what the fuck is this jack
 	
 	if (!!cookieInput) {
 		console.log(cookieInput.length);

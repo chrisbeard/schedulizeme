@@ -153,6 +153,7 @@ select option {
 
 .sidebaroption:hover {
 	background:#eeeeee;
+	transition-duration: 1s;
 }
 
 .visible {
@@ -163,9 +164,13 @@ select option {
 #hiddenDownload, #hiddenCustom, #hiddenNew {
 	display:none;
 	margin:10px;
+	-moz-transition: visibility 0.3s ease-in-out;
+	-webkit-transition: visibility 0.3s ease-in-out;
+	transition: visibility 0.3s ease-in-out;
 }
 
 #downloadBlock:hover #hiddenDownload, #customBlock:hover #hiddenCustom, #newClassBlock:hover #hiddenNew {
 	display:block;
-	visibility:visible;
+	//visibility:visible;
+	transition-duration: 1s;
 }
