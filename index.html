@@ -33,7 +33,7 @@ CREDITS
 <body>
 
 	<header class="header clearfix">
-		<h1 class="title"><img src="icon.png" style="width:2%; height:2%; padding-bottom:10px; -webkit-filter: invert(100%); "/> Schedulize Me</h1>
+		<h1 class="title"><img src="icon.png" style="width:2%; height:2%; padding-bottom:10px; -webkit-filter: invert(100%) -moz-filter: invert(100%); "/> Schedulize Me</h1>
 	</header>
 	<section class="sidebar">
 
@@ -108,6 +108,7 @@ CREDITS
 		}
 	</script>
 
+	
 	<!-- Clear selected courses -->
 	<script type="text/javascript">
 		function clearEverything() {
@@ -225,6 +226,7 @@ CREDITS
 			var course = $('#selectCourse').val();
 			var extension = dept + '&courseNum=' + course;
 			var section = $('#selectSection').val().substring(5,6);
+            $('#submitButton').css('visibility', 'hidden');
 
 			$.get('http://trump6.com/schedulizeme/api/sections.php?dept=' + extension, function(data) {
 
@@ -267,14 +269,7 @@ CREDITS
 
 	<!-- Send crn to php to add course to schedule -->
 	<script type="text/javascript">
-		$(submitButton).click(function() {
-			var crnSection = $('#selectSection').val().substring(0,5);
-			var crnLab = $('#selectLab').val();
-			if (crnLab != null) {
-				console.log(crnLab);
-				crnLab = crnLab.substring(0,5);
-			}
-			var func = function(data) {
+	var func = function(data) {
 				var sections = JSON.parse(data)[0];
 				var dept = sections["dept"];
 				var courseNum = sections["num"];
@@ -293,15 +288,62 @@ CREDITS
 
 				addToCalendar(dept, courseNum, crn, days, location, beginTimeNum, endTimeNum, beginTime, endTime);
 			}
-			var group = $('#selectDept').val() + " " + $('#selectCourse').val();
+
+		$(submitButton).click(function() {
+			var crnSection = $('#selectSection').val().substring(0,5);
+			cookieAdd(crnSection); //keep track of added classes
+			var crnLab = $('#selectLab').val();
+			cookieAdd(crnLab); //keep track of added classes
+			if (crnLab != null) {
+				//console.log(crnLab);
+				crnLab = crnLab.substring(0,5);
+			}
+						var group = $('#selectDept').val() + " " + $('#selectCourse').val();
 			$('canvas').removeLayerGroup(group).drawLayers();
 
-			console.log(group);
+			//console.log(group);
 			$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnSection, func);
 			if (crnLab != null) {
 				$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnLab, func);
 			}
 		});
+	</script>
+
+
+	<!-- cookie prep -->
+	<script type="text/javascript">
+	var fullList=[];
+
+	//check if cookie exists
+	function readCookie(name) {
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(','); //was split by ;
+		for(var i=0;i < ca.length;i++) {
+			var c = ca[i];
+			while (c.charAt(0)==' ') c = c.substring(1,c.length);
+			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+		}
+		return null;
+	}
+
+	var cookieInput = readCookie("CRNs");
+	console.log("poop" + cookieInput);
+	
+	if (!!cookieInput) {
+		console.log(cookieInput.length);
+	for(var i = 0; i < cookieInput.length/5; i++) {
+		console.log(cookieInput[i]);
+		$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + cookieInput[i], func);
+
+	} }
+
+	function cookieAdd(crn) {
+		fullList.push(crn);
+		fullJSON = JSON.stringify(fullList);
+		document.cookie="CRNs=" + fullJSON;
+		console.log(document.cookie);
+	}
+
 	</script>
 
 	<!-- CREATE CANVAS -->
@@ -399,15 +441,15 @@ CREDITS
 
 				// POSSIBLE COLORS FOR CLASSES
 				var colors = ["#e8efe8", "#faf1a2", "#ffe19b", "#e9d0e5", "#8ca4d4", "#bae3f7", "#c1e4dd", "#c5d9a6", "#e74c3c"];
-				var color = Math.floor((Math.random() * 9));
+				var color = colors[Math.floor((Math.random() * 9))];
 				
 				for (i = 0; i < days.length; ++i) {
-					console.log(i + ' ' + dept + ' ' + courseNum);
+					//console.log(i + ' ' + dept + ' ' + courseNum);
 					$('canvas').drawRect({
 						layer: true,
 						name: crn + days[i], // unique to this specific block
 						groups: [dept + " " + courseNum, "courses"], // should be dept + num because that's unique to the group of courses when deleting an entire course
-						fillStyle: colors[color],
+						fillStyle: color,
 						x: days[i] * dayWidth + separator + timeOffset, 
 						y: (calHeight-(13*hourHeight)) + (beginTimeNum-480),
 						fromCenter: false,
@@ -432,24 +474,7 @@ CREDITS
 			<!--window.open($('canvas').getCanvasImage('png'));-->
 		</script>
 
-		<script type="text/javascript">
-	// Original JavaScript code by Chirp Internet: www.chirp.com.au
-	// Please acknowledge use of this code by including this header.
-	function getCookie(name)
-	{
-		 var re = new RegExp(name + "=([^;]+)");
-	         var value = re.exec(document.cookie);
-		 return (value != null) ? unescape(value[1]) : null;
-	}
 
-		var CRNs=[62345, 12345, 12345];
-		var jsonCRNs=JSON.stringify(CRNs);
-		document.cookie="CRNs=" + jsonCRNs; //can also be just +CRNs
-		console.log(document.cookie);
-
-		console.log(getCookie("CRNs"));
-
-		</script>
 	<div>
 
 </body>
