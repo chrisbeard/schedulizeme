@@ -25,6 +25,8 @@ body {
 	color: white;
 	margin: 0;
 	padding: .5em;
+	font-weight: 300;
+	/*font-size: 24px;*/
 }
 
 .spacer {
@@ -47,6 +49,7 @@ body {
 }
 
 h2 {
+	padding: 10px 0 16px;
 	font-size: 20px !important;
 }
 
