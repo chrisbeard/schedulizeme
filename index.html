@@ -31,7 +31,6 @@ CREDITS
 </head>
 
 <body>
-
 	<header class="header clearfix">
 		<h1 class="title"><img src="icon.png" style="width:2%; height:2%; padding-bottom:10px; -webkit-filter: invert(100%);"/> Schedulize Me</h1>
 	</header>
@@ -143,17 +142,19 @@ CREDITS
 			CSVstring += "Subject, Start Date, Start Time, End Date, End Time\n";
 			//$('#course-list').children().each(function(index, value) { // for each course
 			jQuery.each($('#course-list').children(), function(index, value) {
-				var days = 'MWF'; // change this
-				for(var i = 0; i < days.length; i++) { // for each day the class is on
+				var days = jQuery.data(value, 'days');
+				var beginTime = jQuery.data(value, 'beginTimeNum');
+				var endTime = jQuery.data(value, 'endTimeNum');
+				//for(var i = 0; i < days.length; i++) { // for each day the class is on
 					while(currentDate <= endDate) { // for each week throughout the semester
-						var beginTime = jQuery.data(value, 'beginTimeNum');
-						var endTime = jQuery.data(value, 'endTimeNum');
-						CSVstring += (this.id).replace('_', ' ') + ', ' + currentDate.toLocaleDateString() + ', ' + '10:50:00 AM' + ', ' + currentDate.toLocaleDateString() + ', ' + '11:50:00 AM';
+						//var beginTime = jQuery.data(value, 'beginTimeNum');
+						//var endTime = jQuery.data(value, 'endTimeNum');
+						CSVstring += (this.id).replace('_', ' ') + ', ' + currentDate.toLocaleDateString() + ', ' + beginTime + ', ' + currentDate.toLocaleDateString() + ', ' + endTime;
 						CSVstring += '\n'; // newline between entries
 						currentDate.setDate(currentDate.getDate()+7)
 						currentDate.setDate(currentDate.getDate()+7)
 					}
-				}
+				//}
 			});
 			//$.post("createCSV.php", {input: CSVstring}, function(returned_data){
 				//console.log(returned_data); //or do whatever you like with the variable
@@ -331,6 +332,63 @@ CREDITS
 		});
 	</script>
 
+	<script type="text/javascript">
+	function checkForConflicts() {
+		console.log('Checking for conflicts!');
+		jQuery.each($('#course-list').children(), function(index, value) {
+			$('#' + value.id).removeClass('course-conflict');
+			$('#' + value.id + '_green').removeClass("btn-warning");
+			$('#' + value.id + '_green').addClass("btn-success");
+		});
+		var overlapFunc = function(value, beginTime, endTime, days, value2, beginTime2Name, endTime2Name, days2Name) {
+			var beginTime2 = jQuery.data(value2, beginTime2Name);
+			var endTime2 = jQuery.data(value2, endTime2Name);
+			var days2 = jQuery.data(value2, days2Name);
+
+			if (beginTime == null || beginTime2 == null) {
+				return false;
+			}
+
+			if (endTime >= beginTime2 && endTime2 >= beginTime) {
+				for(var i = 0; i < days.length; ++i) {
+					for(var j = 0; j < days2.length; ++j) {
+						if (days[i] == days2[j])
+							return true;
+					}
+				}
+			}
+			return false;
+		};
+		jQuery.each($('#course-list').children(), function(index, value) {
+			console.log(index + ' --> ' + value.id + '    ' + jQuery.data(value, 'beginTimeNum'));
+			var beginTime = jQuery.data(value, 'beginTimeNum');
+			var endTime = jQuery.data(value, 'endTimeNum');
+			var days = jQuery.data(value, 'days');
+
+			var beginTimeLab = jQuery.data(value, 'beginTimeNumLab');
+			var endTimeLab = jQuery.data(value, 'endTimeNumLab');
+			var daysLab = jQuery.data(value, 'daysLab');
+
+			jQuery.each($('#course-list').children(), function(index2, value2) {
+				if (index < index2) {
+					if (overlapFunc(value, beginTime, endTime, days, value2, 'beginTimeNum', 'endTimeNum', 'days') ||
+						  overlapFunc(value, beginTimeLab, endTimeLab, daysLab, value2, 'beginTimeNum', 'endTimeNum', 'days') ||
+						  overlapFunc(value, beginTime, endTime, days, value2, 'beginTimeNumLab', 'endTimeNumLab', 'daysLab') ||
+						  overlapFunc(value, beginTimeLab, endTimeLab, daysLab, value2, 'beginTimeNumLab', 'endTimeNumLab', 'daysLab')) {
+						console.log('Conflict between ' + value.id + ' and ' + value2.id + '!');
+						// $('#' + value.id).addClass('cou	rse-conflict');
+						// $('#' + value2.id).addClass('course-conflict');
+						$('#' + value.id + '_green').removeClass("btn-success");
+						$('#' + value.id + '_green').addClass("btn-warning");
+						$('#' + value2.id + '_green').removeClass("btn-success");
+						$('#' + value2.id + '_green').addClass("btn-warning");
+					}
+				}
+			});
+		});
+	}
+	</script>
+
 	<!-- Send crn to php to add course to schedule -->
 	<script type="text/javascript">
 		var func = function(data) {
@@ -351,6 +409,10 @@ CREDITS
 			var endTime = sections["endTime"];
 			var credits = sections["credits"];
 
+			console.log('Existing courses:');
+
+			checkForConflicts();
+
 			addToCalendar(dept, courseNum, crn, days, location, beginTimeNum, endTimeNum, beginTime, endTime);
 		}
 		
@@ -369,46 +431,26 @@ CREDITS
 			$('#' + group).remove();
 			$('canvas').removeLayerGroup(group).drawLayers();
 
+			console.log(crnSection + ' ' + crnLab);
+
+
+
 			var dept = $('#selectDept').val();
 			var course = $('#selectCourse').val();
-			var content = [ $('<a href="#" class="btn btn-success picked-course">' + $('#selectDept').val() + " " + $('#selectCourse').val() + '</a>'), $('<a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>') ];
+			var content = [ $('<a href="#" id="' + group + '_green" class="btn btn-success picked-course">' + $('#selectDept').val() + " " + $('#selectCourse').val() + '</a>'), $('<a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>') ];
 			// EDITED HERE "var container = $('<div id=' + group + ' class="course-row"></div>');"
 			var container = $('<div id=' + group + ' data-days=' + $('#selectSection').val() + ' class="course-row"></div>');
 			$.each(content, function(i,val) {
 			    container.append(val);
 			});
+
+			console.log($('#course-list').length);
 			$('#course-list').append(container);
+			console.log($('#course-list').length);
 			var dept = $('#selectDept').val();
 			var num = $('#selectCourse').val();
 			var section = $('#selectSection').val();
 			var lab = $('#selectLab').val();
-
-			var beginTimeNum = 0;
-			var endTimeNum = 0;
-			var beginTimeNumLab = null;
-			var endTimeNumLab = null;
-			console.log(crnSection + ' ' + crnLab);
-			$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnSection, function(data) {
-				var sections = JSON.parse(data);
-				jQuery.data(container, "beginTimeNum", sections[0]["beginTimeNum"]);
-				jQuery.data(container, "endTimeNum", sections[0]["endTimeNum"]);
-				// console.log(beginTimeNum);
-				// console.log(endTimeNum);
-			});
-
-			if (crnLab != null) {
-				$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnLab, function(data) {
-					var sections = JSON.parse(data);
-					jQuery.data(container, "beginTimeNumLab", sections[0]["beginTimeNum"]);
-					jQuery.data(container, "endTimeNumLab", sections[0]["endTimeNum"]);
-					// console.log(beginTimeNumLab);
-					// console.log(endTimeNumLab);
-				});
-			}
-			else {
-				jQuery.data(container, "beginTimeNumLab", null);
-				jQuery.data(container, "endTimeNumLab", null);
-			}
 
 			content[0].click(function() {
 				var time = 150;
@@ -440,14 +482,74 @@ CREDITS
 			content[1].click(function() {
 				$('canvas').removeLayerGroup(group).drawLayers();
 				container.remove();
+				checkForConflicts();
 			});
 
-			$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnSection, func);
+			$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnSection,  function(data) {
+				var sections = JSON.parse(data);
+				var beginTime = sections[0]["beginTime"];
+				var endTime = sections[0]["endTime"];
+				var beginTimeNum = sections[0]["beginTimeNum"];
+				var endTimeNum = sections[0]["endTimeNum"];
+				container.data("beginTime", sections[0]["beginTime"]);
+				container.data("endTime", sections[0]["endTime"]);
+				container.data("beginTimeNum", sections[0]["beginTimeNum"]);
+				container.data("endTimeNum", sections[0]["endTimeNum"]);
+				container.data("days", sections[0]["days"]);
+				func(data);
+			});
 			if (crnLab != null) {
-				$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnLab, func);
+				$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnLab, function(data) {
+					var sections = JSON.parse(data);
+					container.data("beginTimeLab", sections[0]["beginTimeLab"]);
+					container.data("endTimeLab", sections[0]["endTimeLab"]);
+					container.data("beginTimeNumLab", sections[0]["beginTimeNum"]);
+					container.data("endTimeNumLab", sections[0]["endTimeNum"]);
+					container.data("daysLab", sections[0]["days"]);
+					console.log('Woo! Added lab time stuff!');
+					func(data);
+				});
+			}
+			else {
+				container.data("beginTimeNumLab", null);
+				container.data("endTimeNumLab", null);
 			}
 		});
 	</script>
+
+	<script type="text/javascript">
+		$(customSubmitButton).click(function() {
+			var group = $('#inputName').val();
+			var beginTime = $('#inputBeginTime').val();		// TODO: process intput time into minutes
+			var endTime = $('#inputEndTime').val();
+			var location = $('#inputLocation').val();
+
+			var beginTimeNum = parseInt(beginTime.substring(0,2)) * 60 + parseInt(beginTime.substring(3,5));
+			var endTimeNum = parseInt(endTime.substring(0,2)) * 60 + parseInt(endTime.substring(3,5));
+
+			var hr = (beginTimeNum/60 % 12);
+			if (hr == 0) {
+				hr = 12;
+			}
+			var min = beginTimeNum % 60;
+			var tod = beginTimeNum >= 720 ? 'pm' : 'am';
+			beginTime = (hr < 10 ? '0' : '') + hr + ':' + (min < 10 ? '0' : '') + min + ' ' + tod;
+
+			var hr = (endTimeNum/60 % 12);
+			if (hr == 0) {
+				hr = 12;
+			}
+			var min = endTimeNum % 60;
+			var tod = endTimeNum >= 720 ? 'pm' : 'am';
+			endTime = (hr < 10 ? '0' : '') + hr + ':' + (min < 10 ? '0' : '') + min + ' ' + tod;
+
+			console.log(beginTime + '   -   ' + beginTimeNum);
+			console.log(endTime + '   -   ' + endTimeNum);
+			
+			addToCalendar(group, "", group, days, location, beginTimeNum, endTimeNum, beginTime, endTime);
+		});
+	</script>
+
 
 	<!-- cookie prep -->
 	<script type="text/javascript">

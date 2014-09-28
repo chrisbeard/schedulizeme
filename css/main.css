@@ -72,6 +72,10 @@ h2 {
 	/*margin-bottom: 1em;*/
 }
 
+.course-conflict {
+	background-color: #f00;
+}
+
 .picked-course-x {
 	/*height: 33px;*/
 	/*width: 40px;*/
@@ -146,7 +150,7 @@ select option {
 	margin-bottom: 1.5em;
 }
 #customSubmitButton {
-	margin: 1em 0;
+	margin: 1.5em 0;
 }
 
 .calendar {
