@@ -31,7 +31,6 @@ CREDITS
 </head>
 
 <body>
-
 	<header class="header clearfix">
 		<h1 class="title"><img src="icon.png" style="width:2%; height:2%; padding-bottom:10px; -webkit-filter: invert(100%);"/> Schedulize Me</h1>
 	</header>
@@ -300,6 +299,8 @@ CREDITS
 			var endTime = sections["endTime"];
 			var credits = sections["credits"];
 
+			console.log('Hey!');
+
 			addToCalendar(dept, courseNum, crn, days, location, beginTimeNum, endTimeNum, beginTime, endTime);
 		}
 		
@@ -318,6 +319,17 @@ CREDITS
 			$('#' + group).remove();
 			$('canvas').removeLayerGroup(group).drawLayers();
 
+			console.log(crnSection + ' ' + crnLab);
+			$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnSection, function(data) {
+				var sections = JSON.parse(data);
+				var beginTimeNum = sections[0]["beginTimeNum"];
+				var endTimeNum = sections[0]["endTimeNum"];
+				// jQuery.data(container, "beginTimeNum", sections[0]["beginTimeNum"]);
+				// jQuery.data(container, "endTimeNum", sections[0]["endTimeNum"]);
+			});
+
+
+
 			var dept = $('#selectDept').val();
 			var course = $('#selectCourse').val();
 			var content = [ $('<a href="#" class="btn btn-success picked-course">' + $('#selectDept').val() + " " + $('#selectCourse').val() + '</a>'), $('<a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>') ];
@@ -325,44 +337,14 @@ CREDITS
 			$.each(content, function(i,val) {
 			    container.append(val);
 			});
+
+			console.log($('#course-list').length);
 			$('#course-list').append(container);
+			console.log($('#course-list').length);
 			var dept = $('#selectDept').val();
 			var num = $('#selectCourse').val();
 			var section = $('#selectSection').val();
 			var lab = $('#selectLab').val();
-
-			var beginTimeNum = 0;
-			var endTimeNum = 0;
-			var beginTimeNumLab = null;
-			var endTimeNumLab = null;
-			console.log(crnSection + ' ' + crnLab);
-			$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnSection, function(data) {
-				var sections = JSON.parse(data);
-				jQuery.data(container, "beginTimeNum", sections[0]["beginTimeNum"]);
-				jQuery.data(container, "endTimeNum", sections[0]["endTimeNum"]);
-				// console.log(beginTimeNum);
-				// console.log(endTimeNum);
-			});
-
-			if (crnLab != null) {
-				$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnLab, function(data) {
-					var sections = JSON.parse(data);
-					jQuery.data(container, "beginTimeNumLab", sections[0]["beginTimeNum"]);
-					jQuery.data(container, "endTimeNumLab", sections[0]["endTimeNum"]);
-					// console.log(beginTimeNumLab);
-					// console.log(endTimeNumLab);
-				});
-			}
-			else {
-				jQuery.data(container, "beginTimeNumLab", null);
-				jQuery.data(container, "endTimeNumLab", null);
-			}
-
-			
-			
-			
-			
-			
 
 			content[0].click(function() {
 				var time = 150;
@@ -396,12 +378,62 @@ CREDITS
 				container.remove();
 			});
 
-			$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnSection, func);
+			$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnSection,  function(data) {
+				var sections = JSON.parse(data);
+				var beginTimeNum = sections[0]["beginTimeNum"];
+				var endTimeNum = sections[0]["endTimeNum"];
+				jQuery.data(container, "beginTimeNum", sections[0]["beginTimeNum"]);
+				jQuery.data(container, "endTimeNum", sections[0]["endTimeNum"]);
+				func(data);
+			});
 			if (crnLab != null) {
-				$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnLab, func);
+				$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnLab, function(data) {
+					var sections = JSON.parse(data);
+					jQuery.data(container, "beginTimeNumLab", sections[0]["beginTimeNum"]);
+					jQuery.data(container, "endTimeNumLab", sections[0]["endTimeNum"]);
+					func(data);
+				});
+			}
+			else {
+				jQuery.data(container, "beginTimeNumLab", null);
+				jQuery.data(container, "endTimeNumLab", null);
 			}
 		});
 	</script>
+
+	<script type="text/javascript">
+		$(customSubmitButton).click(function() {
+			var group = $('#inputName').val();
+			var beginTime = $('#inputBeginTime').val();		// TODO: process intput time into minutes
+			var endTime = $('#inputEndTime').val();
+			var location = $('#inputLocation').val();
+
+			var beginTimeNum = parseInt(beginTime.substring(0,2)) * 60 + parseInt(beginTime.substring(3,5));
+			var endTimeNum = parseInt(endTime.substring(0,2)) * 60 + parseInt(endTime.substring(3,5));
+
+			var hr = (beginTimeNum/60 % 12);
+			if (hr == 0) {
+				hr = 12;
+			}
+			var min = beginTimeNum % 60;
+			var tod = beginTimeNum >= 720 ? 'pm' : 'am';
+			beginTime = (hr < 10 ? '0' : '') + hr + ':' + (min < 10 ? '0' : '') + min + ' ' + tod;
+
+			var hr = (endTimeNum/60 % 12);
+			if (hr == 0) {
+				hr = 12;
+			}
+			var min = endTimeNum % 60;
+			var tod = endTimeNum >= 720 ? 'pm' : 'am';
+			endTime = (hr < 10 ? '0' : '') + hr + ':' + (min < 10 ? '0' : '') + min + ' ' + tod;
+
+			console.log(beginTime + '   -   ' + beginTimeNum);
+			console.log(endTime + '   -   ' + endTimeNum);
+			
+			addToCalendar(group, "", group, days, location, beginTimeNum, endTimeNum, beginTime, endTime);
+		});
+	</script>
+
 
 	<!-- cookie prep -->
 	<script type="text/javascript">
