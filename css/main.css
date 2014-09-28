@@ -72,6 +72,10 @@ h2 {
 	/*margin-bottom: 1em;*/
 }
 
+.course-conflict {
+	background-color: #f00;
+}
+
 .picked-course-x {
 	/*height: 33px;*/
 	/*width: 40px;*/
