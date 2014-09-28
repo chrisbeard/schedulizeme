@@ -21,7 +21,7 @@ body {
 }
 
 .title {
-	line-height: 3rem;
+	/*line-height: 3rem;*/
 	color: white;
 	margin: 0;
 	padding: .5em;
@@ -116,9 +116,7 @@ select option {
 }
 
 .button-clear {
-	/*margin: 0 auto 1em;*/
 	margin: 0 auto;
-	/*padding: 2em;*/
 	position: absolute;
 	display: block;
 	bottom: 16px;
