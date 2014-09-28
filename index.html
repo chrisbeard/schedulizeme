@@ -162,7 +162,7 @@ CREDITS
 	<!-- Populate course list -->
 	<script type="text/javascript">
 		$(selectDept).on('change', function() {
-			console.log("Department start");
+			// console.log("Department start");
 			$('#selectCourse').css('visibility', 'visible');
 			$('#selectSection').css('visibility', 'hidden');
 			$('#submitButton').css('visibility', 'hidden');
@@ -186,17 +186,17 @@ CREDITS
 					el.textContent = opt["num"] + ' - ' + opt["title"];
 					el.value = opt["num"];
 					select.appendChild(el);
-					console.log(el.value);
+					// console.log(el.value);
 				}
 			});
-			console.log("Department end");
+			// console.log("Department end");
 		});
 	</script>
 	
 	<!-- Populate section list -->
 	<script type="text/javascript">
 		$(selectCourse).on('change', function() {
-			console.log("Course change");
+			// console.log("Course change");
 			$('#selectSection').css('visibility', 'visible');
 			$('#selectLab').css('display', 'none');
 			$('#submitButton').css('visibility', 'hidden');
@@ -224,22 +224,21 @@ CREDITS
 					}
 				}
 			});
-			console.log("Course change done");
+			// console.log("Course change done");
 		});
 	</script>
 
 	<!-- Populate lab list -->
 	<script type="text/javascript">
 		$(selectSection).on('change', function() {
-			console.log("Section change");
+			// console.log("Section change");
 			$('#selectLab').empty();
 			var dept = $('#selectDept').val();
 			var course = $('#selectCourse').val();
 			var extension = dept + '&courseNum=' + course;
-			console.log($('#selectSection').val());
+			// console.log($('#selectSection').val());
 			var section = $('#selectSection').val().substring(5,6);
             $('#submitButton').css('visibility', 'hidden');
-
 
 			$.get('http://trump6.com/schedulizeme/api/sections.php?dept=' + extension, function(data) {
 
@@ -270,7 +269,7 @@ CREDITS
 					$('#submitButton').css('visibility', 'visible');
 				}
 			});			
-			console.log("Section change done");
+			// console.log("Section change done");
 		});
 	</script>
 
@@ -332,6 +331,39 @@ CREDITS
 			var section = $('#selectSection').val();
 			var lab = $('#selectLab').val();
 
+			var beginTimeNum = 0;
+			var endTimeNum = 0;
+			var beginTimeNumLab = null;
+			var endTimeNumLab = null;
+			console.log(crnSection + ' ' + crnLab);
+			$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnSection, function(data) {
+				var sections = JSON.parse(data);
+				jQuery.data(container, "beginTimeNum", sections[0]["beginTimeNum"]);
+				jQuery.data(container, "endTimeNum", sections[0]["endTimeNum"]);
+				// console.log(beginTimeNum);
+				// console.log(endTimeNum);
+			});
+
+			if (crnLab != null) {
+				$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnLab, function(data) {
+					var sections = JSON.parse(data);
+					jQuery.data(container, "beginTimeNumLab", sections[0]["beginTimeNum"]);
+					jQuery.data(container, "endTimeNumLab", sections[0]["endTimeNum"]);
+					// console.log(beginTimeNumLab);
+					// console.log(endTimeNumLab);
+				});
+			}
+			else {
+				jQuery.data(container, "beginTimeNumLab", null);
+				jQuery.data(container, "endTimeNumLab", null);
+			}
+
+			
+			
+			
+			
+			
+
 			content[0].click(function() {
 				var time = 150;
 				setTimeout(function() {
@@ -358,13 +390,12 @@ CREDITS
 						}, time);
 					}, time);
 				}, time);
-				});
+			});
 			content[1].click(function() {
 				$('canvas').removeLayerGroup(group).drawLayers();
 				container.remove();
-		});
+			});
 
-			//console.log(group);
 			$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnSection, func);
 			if (crnLab != null) {
 				$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnLab, func);
@@ -393,11 +424,11 @@ CREDITS
 	
 	if (!!cookieInput) {
 		console.log(cookieInput.length);
-	for(var i = 0; i < cookieInput.length/5; i++) {
-		console.log(cookieInput[i]);
-		$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + cookieInput[i], func);
-
-	} }
+		for(var i = 0; i < cookieInput.length/5; i++) {
+			console.log(cookieInput[i]);
+			$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + cookieInput[i], func);
+		}
+	}
 
 	function cookieAdd(crn) {
 		fullList.push(crn);
