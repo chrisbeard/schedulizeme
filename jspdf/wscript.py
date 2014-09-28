@@ -14,15 +14,19 @@ def minifyfiles(context):
         ).replace(
             "${commitID}", getCommitIDstring()
         ) + \
+        (src - 'jspdf.js' + 'libs/polyfill.js').text + \
         (src - '.js' + '.plugin.addimage.js').text + \
+        (src - '.js' + '.plugin.autoprint.js').text + \
+        (src - '.js' + '.plugin.cell.js').text + \
         (src - '.js' + '.plugin.from_html.js').text + \
         (src - '.js' + '.plugin.sillysvgrenderer.js').text + \
         (src - '.js' + '.plugin.split_text_to_size.js').text + \
         (src - '.js' + '.plugin.standard_fonts_metrics.js').text + \
-        (src - 'jspdf.js' + 'libs/Blob.js/BlobBuilder.js').text + \
+        (src - '.js' + '.plugin.total_pages.js').text + \
+        (src - 'jspdf.js' + 'libs/Blob.js/Blob.js').text + \
         (src - 'jspdf.js' + 'libs/FileSaver.js/FileSaver.js').text + \
-        (src - 'jspdf.js' + 'libs/Deflate/deflate.js').text + \
-        (src - 'jspdf.js' + 'libs/Deflate/adler32cs.js').text
+        (src - 'jspdf.js' + 'libs/deflate.js').text + \
+        (src - 'jspdf.js' + 'libs/adler32cs.js/adler32cs.js').text
         # (src - '.js' + '.plugin.from_html.js').text + \
         # 
 
@@ -33,10 +37,10 @@ def minifyfiles(context):
     minified.text = compress_with_closure_compiler( dst.text )
 
     # AMD-compatible version:
-    (minified - '.min.js' + '.amd.min.js').text = """;(function(){
-%s
-;define(function(){return jsPDF})})();
-""" % minified.text
+    # (minified - '.min.js' + '.amd.min.js').text = """;(function(){
+# %s
+# ;define(function(){return jsPDF})})();
+# """ % minified.text
     
     # jQuery "NoConflict" version:
     # only needed if some of the modules compiled into jsPDF need $
@@ -81,7 +85,7 @@ def getCommitIDstring():
         # let's not bother emulating it. Not important
         return ""
     else:
-        return "commit ID " + subprocess.check_output(
+        return subprocess.check_output(
             [
                 'git'
                 , 'rev-parse'

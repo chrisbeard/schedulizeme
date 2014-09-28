@@ -33,66 +33,69 @@ CREDITS
 <body>
 
 	<header class="header clearfix">
-		<h1 class="title"><img src="icon.png" style="width:2%; height:2%; padding-bottom:10px; -webkit-filter: invert(100%) -moz-filter: invert(100%); "/> Schedulize Me</h1>
+		<h1 class="title"><img src="icon.png" style="width:2%; height:2%; padding-bottom:10px; -webkit-filter: invert(100%);"/> Schedulize Me</h1>
 	</header>
 	<section class="sidebar">
 
 		<div class="spacer"></div>
 
-			<h2>Build your schedule.</h2>
-			
-			<div id="newClassBlock">
-				<h3 id="newClass" class="sidebaroption">ADD NEW CLASS</h3>
-				<span id="hiddenNew">
-					<div class="styled-select">
-						<select id="selectDept" class="course-nav">
-						</select>
-					</div>
-					<div class="styled-select">
-						<select id="selectCourse" class="course-nav" selected="Course">
-						</select>
-					</div>
-					<div class="styled-select">
-						<select id="selectSection" class="course-nav">
-						</select>
-					</div>
-					<div class="styled-select">
-						<select id="selectLab" class="course-nav">
-						</select>
-					</div>
-					<a href="#" class="btn btn-info" id="submitButton"><i class="icon-white icon-plus"></i>Add</a>
-				</span>
-			</div>
-			
-			<div id="customBlock">
-				<h3 id="addCustom" class="sidebaroption">ADD CUSTOM EVENT</h3>
-				<span id="hiddenCustom">
-					<div class="styled-select">
-						<input type="text" id="inputName" value="Name" class="custom-nav"></input>
-					</div>
-					<div class="styled-select">
-						<input type="time" id="inputBeginTime" class="custom-nav" value="00:00:00">
-					</div>
-					to
-					<div class="styled-select">
-						<input type="time" id="inputEndTime" class="custom-nav" value="00:00:00">
-					</div>
-					<div class="styled-select">
-						<input type="text" id="inputLocation" value="Location" class="custom-nav"></input>
-					</div>
-					<a href="#" class="btn btn-info" id="customSubmitButton"><i class="icon-white icon-plus"></i>Add</a>
-				</span>
-			</div>
-			
-			<div id="downloadBlock">
-				<h3 id="download" class="sidebaroption">DOWNLOAD SCHEDULE</h3>
-				<span id="hiddenDownload">
-					<a href="javascript:generatePDF()" class="button">.pdf version</a><br />
-					.csv version
-				</span>
-			</div>
+		<h2>Build your schedule</h2>
 
-			<button type="button" class="btn btn-danger btn-small button-clear" onclick="clearEverything()">Clear Selections</button>
+		<div id="course-list"></div>
+		<div id="spacer2"></div>
+
+		<div id="newClassBlock">
+			<h3 id="newClass" class="sidebaroption">ADD NEW CLASS</h3>
+			<span id="hiddenNew">
+				<div class="styled-select">
+					<select id="selectDept" class="course-nav">
+					</select>
+				</div>
+				<div class="styled-select">
+					<select id="selectCourse" class="course-nav" selected="Course">
+					</select>
+				</div>
+				<div class="styled-select">
+					<select id="selectSection" class="course-nav">
+					</select>
+				</div>
+				<div class="styled-select">
+					<select id="selectLab" class="course-nav">
+					</select>
+				</div>
+				<a href="#" class="btn btn-info" id="submitButton"><i class="icon-white icon-plus"></i>Add</a>
+			</span>
+		</div>
+			
+		<div id="customBlock">
+			<h3 id="addCustom" class="sidebaroption">ADD CUSTOM EVENT</h3>
+			<span id="hiddenCustom">
+				<div class="styled-select">
+					<input type="text" id="inputName" placeholder="Name" class="custom-nav"></input>
+				</div>
+				<div class="styled-select">
+					<input type="time" id="inputBeginTime" class="custom-nav" value="00:00:00">
+				</div>
+				to
+				<div class="styled-select">
+					<input type="time" id="inputEndTime" class="custom-nav" value="00:00:00">
+				</div>
+				<div class="styled-select">
+					<input type="text" id="inputLocation" placeholder="Location" class="custom-nav"></input>
+				</div>
+				<a href="#" class="btn btn-info" id="customSubmitButton"><i class="icon-white icon-plus"></i>Add</a>
+			</span>
+		</div>
+			
+		<div id="downloadBlock">
+			<h3 id="download" class="sidebaroption">DOWNLOAD SCHEDULE</h3>
+			<span id="hiddenDownload">
+				<a href="javascript:generatePDF()" class="button">.pdf version</a><br />
+				.csv version
+			</span>
+		</div>
+
+		<button type="button" class="btn btn-danger btn-small button-clear" onclick="clearEverything()">Clear Selections</button>
 	</section>
 	
 	<script type="text/javascript" src="jspdf/jspdf.js"></script>
@@ -100,14 +103,21 @@ CREDITS
 	<script type="text/javascript" src="jspdf/jspdf.plugin.split_text_to_size.js"></script>               
 	<script type="text/javascript" src="jspdf/jspdf.plugin.from_html.js"></script>
 	<script type="text/javascript" src="jspdf/jspdf.plugin.addImage.js"></script>
+	<script type="text/javascript" src="jspdf/libs/png_support/zlib.js"></script>
+	<script type="text/javascript" src="jspdf/libs/png_support/png.js"></script>
+	<script type="text/javascript" src="jspdf/jspdf.plugin.png_support.js"></script>
+	<script type="text/javascript" src="jspdf/libs/FileSaver.js"></script>
 	<script type="text/javascript">
 		function generatePDF() {
 			var image = $('canvas').getCanvasImage('png');
 			var doc = new jsPDF("landscape");
 			console.log(image);
-			doc.addImage(image, 'png', 15, 40, 180, 160);
-			//doc.output('dataurl');
-			var dataURL = canvas.toDataURL();
+			doc.addImage(image, 'PNG', 15, 20, 270, 160);
+			doc.setFont('times');
+			doc.text('Schedulize Me', 24, 205);
+			var iconuri = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAABmJLR0QA/wD/AP+gvaeTAAAEOUlEQVR42u3bQWgjVRzH8d97M91QdNEqYi11UVgWoZQ2SbtYCoJgrScPFRbBk0cvHgR1L4LiZb1YUPAi7rmIVkEQd6EnkdKkmbgtiJSKykrIiuyCutqY5v09WEuXbRJENt3MfD/HzGseffPNZDKZOB2BYrF4wjlbNNNjew99aaZXkiTZZv7eckex8yX7WtLQjVvsahy3JtbWNn7K5vy65n00US6XL/dyf/ieF+ds8ZB/XpK7Z3d3YDG782sohPB2r/dHzwMw01yHrXPMn/IAJB3vsO0u5k9/ALiNEAABgABAACAAEACypu2l4EKhcNJ7LZhpXtKDkkYk3cGS9YXrkmqSLjunCyFoud33DDcFMD09PRzC7puSe15SxFqmQkvS+TgeeG1tbe1K2wCmp/NPhOCWJN3LmqXSLyHYs9VqdeWmAKampmbNwoqkHOuUao0Q7PFqtbq6H0A+nx/xXonk7md9MqHufZQvl8t1L0lR5N5i52fKcAi75yTJnT49carVir7hhC97J4ZmesS3Wv4MOz+TIklnYsk92WXgz2Z6sdlsXtzc3Lz2f2ctFgvWaXulktzS29SyMP/4+PhQLhfPm7l3JN3XbpxzNhdLeqjTk5nphSRJlnnB9I+9F+pSsVhsSfZh+5HuYS9puNOTOee+YEn7U7PZ/LzLkAe8pIHOh6TKHyxlf9rY2LjeZcgxvgzKOAIgABAACKCHfu+w7VfmT30AbqXDxpVsz+8uZuEIcFbSIVcU7WoUtc5meX7v/UupD6BSqXwruUnntCzpt38Oe+4j7+PJUunSVhbnN9PH3seTvf5lsCS5o742jlur2/7lUwCfAkAAIAAQAAgABAACAAGAAEAAIAAQAAgABIBUins9Ybfvp7v5r/cnpH0+jgAgABAACAAEAAIAAYAAQAAgABAAuuC3gSnHbwPBWwAIAAQAAgABgABwAPcE9vl8HAFAACAAEAAIAAQAAgABgABAACAAdME9gSnHPYHgLQAEAAIAAYAAQAA4gHsC+3w+jgAgABAACAAEAAIAAYAAQAAgABAAuuCewJTjnkDwFgACAAGAAEAAIAAQAAgABAACIACWgABAACAAEACyGcBfnQaMjY3dyTL1p9nZ2eNdhjS8pHqnEYODx+ZZyv60s7PzVJch9VjSj5JOtBth5t4rFApRLpf7bHV19U+W9fY3MzMz2Gg0npbs3c4j7XtXLOZfldw5li2L3Ms+isInklosRua0zOxTXypd2pJ0nvXI3Kv//SRJtr0khWCvS3aFRcmMuvf+jf3rANVqteZc9IykBmuTeo0QbKFcLtf3A5Ck9fX1r5zzM3ufCpBOP3gfHq1Wq6v/PhAd3Fqr1eqjo6NLZuFuyU2IK4WpOeGT9EEcDzxXKlW+u+FMoN1fFAqFk95rwUzzkjsl2QhB9I0guZpkW87pQghaTpJk+7CBfwOk653RqmHn7wAAAABJRU5ErkJggg==';
+			doc.addImage(iconuri, 'PNG', 17, 200, 5, 5);
+			doc.save('SchedulizeMe.pdf');
 		}
 	</script>
 
@@ -116,6 +126,7 @@ CREDITS
 	<script type="text/javascript">
 		function clearEverything() {
 			$('canvas').removeLayerGroup("courses").drawLayers();
+			$('#course-list').empty();
 
 			// Not going to reset the search fields
 			// $('#selectCourse').css('visibility', 'hidden');
@@ -154,12 +165,14 @@ CREDITS
 				el.value = opt["dept"];
 				select.appendChild(el);
 			}
+
 		});
 	</script>
 
 	<!-- Populate course list -->
 	<script type="text/javascript">
 		$(selectDept).on('change', function() {
+			console.log("Department start");
 			$('#selectCourse').css('visibility', 'visible');
 			$('#selectSection').css('visibility', 'hidden');
 			$('#submitButton').css('visibility', 'hidden');
@@ -183,14 +196,17 @@ CREDITS
 					el.textContent = opt["num"] + ' - ' + opt["title"];
 					el.value = opt["num"];
 					select.appendChild(el);
+					console.log(el.value);
 				}
 			});
+			console.log("Department end");
 		});
 	</script>
 	
 	<!-- Populate section list -->
 	<script type="text/javascript">
 		$(selectCourse).on('change', function() {
+			console.log("Course change");
 			$('#selectSection').css('visibility', 'visible');
 			$('#selectLab').css('display', 'none');
 			$('#submitButton').css('visibility', 'hidden');
@@ -218,18 +234,22 @@ CREDITS
 					}
 				}
 			});
+			console.log("Course change done");
 		});
 	</script>
 
 	<!-- Populate lab list -->
 	<script type="text/javascript">
 		$(selectSection).on('change', function() {
+			console.log("Section change");
 			$('#selectLab').empty();
 			var dept = $('#selectDept').val();
 			var course = $('#selectCourse').val();
 			var extension = dept + '&courseNum=' + course;
+			console.log($('#selectSection').val());
 			var section = $('#selectSection').val().substring(5,6);
             $('#submitButton').css('visibility', 'hidden');
+
 
 			$.get('http://trump6.com/schedulizeme/api/sections.php?dept=' + extension, function(data) {
 
@@ -260,6 +280,7 @@ CREDITS
 					$('#submitButton').css('visibility', 'visible');
 				}
 			});			
+			console.log("Section change done");
 		});
 	</script>
 
@@ -272,37 +293,86 @@ CREDITS
 
 	<!-- Send crn to php to add course to schedule -->
 	<script type="text/javascript">
-	var func = function(data) {
-				var sections = JSON.parse(data)[0];
-				var dept = sections["dept"];
-				var courseNum = sections["num"];
-				var crn = sections["crn"];
-				var dayString = sections["days"];
-				var days = [];
-				var daysOfWeek = "MTWRFSU";
-				for (i = 0; i < dayString.length; ++i) {
-					days.push(daysOfWeek.indexOf(dayString[i]));
-				}
-				var location = sections["location"];
-				var beginTimeNum = sections["beginTimeNum"];
-				var endTimeNum = sections["endTimeNum"];
-				var beginTime = sections["beginTime"];
-				var endTime = sections["endTime"];
-
-				addToCalendar(dept, courseNum, crn, days, location, beginTimeNum, endTimeNum, beginTime, endTime);
+		var func = function(data) {
+			var sections = JSON.parse(data)[0];
+			var dept = sections["dept"];
+			var courseNum = sections["num"];
+			var crn = sections["crn"];
+			var dayString = sections["days"];
+			var days = [];
+			var daysOfWeek = "MTWRFSU";
+			for (i = 0; i < dayString.length; ++i) {
+				days.push(daysOfWeek.indexOf(dayString[i]));
 			}
+			var location = sections["location"];
+			var beginTimeNum = sections["beginTimeNum"];
+			var endTimeNum = sections["endTimeNum"];
+			var beginTime = sections["beginTime"];
+			var endTime = sections["endTime"];
+			var credits = sections["credits"];
 
+			addToCalendar(dept, courseNum, crn, days, location, beginTimeNum, endTimeNum, beginTime, endTime);
+		}
+		
 		$(submitButton).click(function() {
 			var crnSection = $('#selectSection').val().substring(0,5);
 			cookieAdd(crnSection); //keep track of added classes
 			var crnLab = $('#selectLab').val();
-			cookieAdd(crnLab); //keep track of added classes
 			if (crnLab != null) {
 				//console.log(crnLab);
+				cookieAdd(crnLab); //keep track of added classes
 				crnLab = crnLab.substring(0,5);
 			}
-						var group = $('#selectDept').val() + " " + $('#selectCourse').val();
+			var group = $('#selectDept').val() + "_" + $('#selectCourse').val();
 			$('canvas').removeLayerGroup(group).drawLayers();
+
+			$('#' + group).remove();
+			$('canvas').removeLayerGroup(group).drawLayers();
+
+			var dept = $('#selectDept').val();
+			var course = $('#selectCourse').val();
+			var content = [ $('<a href="#" class="btn btn-success picked-course">' + $('#selectDept').val() + " " + $('#selectCourse').val() + '</a>'), $('<a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>') ];
+			var container = $('<div id=' + group + ' class="course-row"></div>');
+			$.each(content, function(i,val) {
+			    container.append(val);
+			});
+			$('#course-list').append(container);
+			var dept = $('#selectDept').val();
+			var num = $('#selectCourse').val();
+			var section = $('#selectSection').val();
+			var lab = $('#selectLab').val();
+
+			content[0].click(function() {
+				var time = 150;
+				setTimeout(function() {
+					if (dept != $('#selectDept').val()) {
+						$('#selectDept').val(dept);
+						$('#selectDept').change();
+					}
+					setTimeout(function() {
+						if (num != $('#selectCourse').val()) {
+							$('#selectCourse').val(num);
+							$('#selectCourse').change();
+						}
+						setTimeout(function() {
+							if (section != $('#selectSection').val()) {
+								$('#selectSection').val(section);
+								$('#selectSection').change();
+							}
+							setTimeout(function() {
+								if (lab != $('#selectLab').val()) {
+									$('#selectLab').val(lab);
+									$('#selectLab').change();
+								}
+							}, time);
+						}, time);
+					}, time);
+				}, time);
+				});
+			content[1].click(function() {
+				$('canvas').removeLayerGroup(group).drawLayers();
+				container.remove();
+		});
 
 			//console.log(group);
 			$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnSection, func);
@@ -311,7 +381,6 @@ CREDITS
 			}
 		});
 	</script>
-
 
 	<!-- cookie prep -->
 	<script type="text/javascript">
@@ -404,7 +473,7 @@ CREDITS
 				}
 			}
 			
-			<!-- GRAY HALF-HOUR BOXES -->
+			// GRAY HALF-HOUR BOXES
 			for(var i = calHeight-(13*hourHeight); i < calHeight; i+=hourHeight) {
 				for (var j = timeOffset; j < dayWidth*7; j+=dayWidth) {
 					$('canvas').drawRect({
@@ -419,8 +488,8 @@ CREDITS
 				}
 			}
 			
-			<!-- TIMES -->
-			var numberColor = "#bdc3c7";
+			// TIMES
+			var numberColor = "#BEBEBE";
 			for(var i = 0; i < 14; i++) {
 				var j = i+8+' ';
 				if(j > 12) {
@@ -448,11 +517,10 @@ CREDITS
 				var color = colors[Math.floor((Math.random() * 9))];
 				
 				for (i = 0; i < days.length; ++i) {
-					//console.log(i + ' ' + dept + ' ' + courseNum);
 					$('canvas').drawRect({
 						layer: true,
 						name: crn + days[i], // unique to this specific block
-						groups: [dept + " " + courseNum, "courses"], // should be dept + num because that's unique to the group of courses when deleting an entire course
+						groups: [dept + "_" + courseNum, "courses"], // should be dept + num because that's unique to the group of courses when deleting an entire course
 						fillStyle: color,
 						x: days[i] * dayWidth + separator + timeOffset, 
 						y: (calHeight-(13*hourHeight)) + (beginTimeNum-480),
@@ -464,7 +532,7 @@ CREDITS
 					$('canvas').drawText({
 						layer: true,
 						name: crn + days[i] + 'text',
-						groups: [dept + " " + courseNum, "courses"],
+						groups: [dept + "_" + courseNum, "courses"],
 						fillStyle: '#000',
 						strokeWidth: 2,
 						x: (days[i] * dayWidth) + (dayWidth/2) + timeOffset, 
@@ -478,8 +546,24 @@ CREDITS
 			<!--window.open($('canvas').getCanvasImage('png'));-->
 		</script>
 
+		<script type="text/javascript">
+			// Original JavaScript code by Chirp Internet: www.chirp.com.au
+			// Please acknowledge use of this code by including this header.
+			function getCookie(name) {
+				var re = new RegExp(name + "=([^;]+)");
+			  var value = re.exec(document.cookie);
+				return (value != null) ? unescape(value[1]) : null;
+			}
 
-	<div>
+			var CRNs=[62345, 12345, 12345];
+			var jsonCRNs=JSON.stringify(CRNs);
+			document.cookie="CRNs=" + jsonCRNs; //can also be just +CRNs
+			// console.log(document.cookie);
+
+			// console.log(getCookie("CRNs"));
+
+		</script>
+	</div>
 
 </body>
 </html>
