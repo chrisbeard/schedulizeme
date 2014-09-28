@@ -33,32 +33,37 @@
 
 		<div class="spacer"></div>
 
-			<h2>Build your schedule</h2>
-			<div class="styled-select">
-				<select id="selectDept" class="course-nav">
-				</select>
-			</div>
-			<div class="styled-select">
-				<select id="selectCourse" class="course-nav" selected="Course">
-				</select>
-			</div>
-			<div class="styled-select">
-				<select id="selectSection" class="course-nav">
-				</select>
-			</div>
-			<div class="styled-select">
-				<select id="selectLab" class="course-nav">
-				</select>
-			</div>
-			<a href="#" class="btn btn-success" id="submitButton"><i class="icon-white icon-plus"></i>Add</a>
+		<h2>Build your schedule</h2>
 
-			<button type="button" class="btn btn-danger btn-small button-clear" onclick="clearEverything()">Clear Selections</button>
+		<div id="course-list"></div>
+		<div id="spacer2"></div>
+
+		<div class="styled-select">
+			<select id="selectDept" class="course-nav">
+			</select>
+		</div>
+		<div class="styled-select">
+			<select id="selectCourse" class="course-nav" selected="Course">
+			</select>
+		</div>
+		<div class="styled-select">
+			<select id="selectSection" class="course-nav">
+			</select>
+		</div>
+		<div class="styled-select">
+			<select id="selectLab" class="course-nav">
+			</select>
+		</div>
+		<a href="#" class="btn btn-success" id="submitButton"><i class="icon-white icon-plus"></i>Add</a>
+
+		<button type="button" class="btn btn-danger btn-small button-clear" onclick="clearEverything()">Clear Selections</button>
 	</section>
 
 	<!-- Clear selected courses -->
 	<script type="text/javascript">
 		function clearEverything() {
 			$('canvas').removeLayerGroup("courses").drawLayers();
+			$('#course-list').empty();
 
 			// Not going to reset the search fields
 			// $('#selectCourse').css('visibility', 'hidden');
@@ -97,12 +102,14 @@
 				el.value = opt["dept"];
 				select.appendChild(el);
 			}
+
 		});
 	</script>
 
 	<!-- Populate course list -->
 	<script type="text/javascript">
 		$(selectDept).on('change', function() {
+			console.log("Department start");
 			$('#selectCourse').css('visibility', 'visible');
 			$('#selectSection').css('visibility', 'hidden');
 			$('#submitButton').css('visibility', 'hidden');
@@ -126,14 +133,17 @@
 					el.textContent = opt["num"] + ' - ' + opt["title"];
 					el.value = opt["num"];
 					select.appendChild(el);
+					console.log(el.value);
 				}
 			});
+			console.log("Department end");
 		});
 	</script>
 	
 	<!-- Populate section list -->
 	<script type="text/javascript">
 		$(selectCourse).on('change', function() {
+			console.log("Course change");
 			$('#selectSection').css('visibility', 'visible');
 			$('#selectLab').css('display', 'none');
 			$('#submitButton').css('visibility', 'hidden');
@@ -161,17 +171,21 @@
 					}
 				}
 			});
+			console.log("Course change done");
 		});
 	</script>
 
 	<!-- Populate lab list -->
 	<script type="text/javascript">
 		$(selectSection).on('change', function() {
+			console.log("Section change");
 			$('#selectLab').empty();
 			var dept = $('#selectDept').val();
 			var course = $('#selectCourse').val();
 			var extension = dept + '&courseNum=' + course;
+			console.log($('#selectSection').val());
 			var section = $('#selectSection').val().substring(5,6);
+
 
 			$.get('http://trump6.com/schedulizeme/api/sections.php?dept=' + extension, function(data) {
 
@@ -202,6 +216,7 @@
 					$('#submitButton').css('visibility', 'visible');
 				}
 			});			
+			console.log("Section change done");
 		});
 	</script>
 
@@ -218,7 +233,6 @@
 			var crnSection = $('#selectSection').val().substring(0,5);
 			var crnLab = $('#selectLab').val();
 			if (crnLab != null) {
-				console.log(crnLab);
 				crnLab = crnLab.substring(0,5);
 			}
 			var func = function(data) {
@@ -237,17 +251,69 @@
 				var endTimeNum = sections["endTimeNum"];
 				var beginTime = sections["beginTime"];
 				var endTime = sections["endTime"];
+				var credits = sections["credits"];
 
 				addToCalendar(dept, courseNum, crn, days, location, beginTimeNum, endTimeNum, beginTime, endTime);
 			}
-			var group = $('#selectDept').val() + " " + $('#selectCourse').val();
+			var group = $('#selectDept').val() + "_" + $('#selectCourse').val();
+			$('#' + group).remove();
 			$('canvas').removeLayerGroup(group).drawLayers();
 
-			console.log(group);
+			var dept = $('#selectDept').val();
+			var course = $('#selectCourse').val();
+			var content = [ $('<a href="#" class="btn btn-success picked-course">' + group + '</a>'), $('<a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>') ];
+			var container = $('<div id=' + group + ' class="course-row"></div>');
+			$.each(content, function(i,val) {
+			    container.append(val);
+			});
+			$('#course-list').append(container);
+			var dept = $('#selectDept').val();
+			var num = $('#selectCourse').val();
+			var section = $('#selectSection').val();
+			var lab = $('#selectLab').val();
+
+			content[0].click(function() {
+				var time = 150;
+				setTimeout(function() {
+					if (dept != $('#selectDept').val()) {
+						$('#selectDept').val(dept);
+						$('#selectDept').change();
+					}
+					setTimeout(function() {
+						if (num != $('#selectCourse').val()) {
+							$('#selectCourse').val(num);
+							$('#selectCourse').change();
+						}
+						setTimeout(function() {
+							if (section != $('#selectSection').val()) {
+								$('#selectSection').val(section);
+								$('#selectSection').change();
+							}
+							setTimeout(function() {
+								if (lab != $('#selectLab').val()) {
+									$('#selectLab').val(lab);
+									$('#selectLab').change();
+								}
+							}, time);
+						}, time);
+					}, time);
+				}, time);
+ 			});
+			content[1].click(function() {
+				$('canvas').removeLayerGroup(group).drawLayers();
+				container.remove();
+			});
+
 			$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnSection, func);
 			if (crnLab != null) {
 				$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnLab, func);
 			}
+		});
+	</script>
+
+	<script type="text/javascript">
+		$().click(function() {
+
 		});
 	</script>
 
@@ -305,7 +371,7 @@
 				}
 			}
 			
-			<!-- GRAY HALF-HOUR BOXES -->
+			// GRAY HALF-HOUR BOXES
 			for(var i = calHeight-(13*hourHeight); i < calHeight; i+=hourHeight) {
 				for (var j = timeOffset; j < dayWidth*7; j+=dayWidth) {
 					$('canvas').drawRect({
@@ -320,7 +386,7 @@
 				}
 			}
 			
-			<!-- TIMES -->
+			// TIMES
 			var numberColor = "#BEBEBE";
 			for(var i = 0; i < 14; i++) {
 				var j = i+8+' ';
@@ -350,11 +416,10 @@
 				var color = Math.floor((Math.random() * 9));
 				
 				for (i = 0; i < days.length; ++i) {
-					console.log(i + ' ' + dept + ' ' + courseNum);
 					$('canvas').drawRect({
 						layer: true,
 						name: crn + days[i], // unique to this specific block
-						groups: [dept + " " + courseNum, "courses"], // should be dept + num because that's unique to the group of courses when deleting an entire course
+						groups: [dept + "_" + courseNum, "courses"], // should be dept + num because that's unique to the group of courses when deleting an entire course
 						fillStyle: colors[color],
 						x: days[i] * dayWidth + separator + timeOffset, 
 						y: (calHeight-(13*hourHeight)) + (beginTimeNum-480),
@@ -366,7 +431,7 @@
 					$('canvas').drawText({
 						layer: true,
 						name: crn + days[i] + 'text',
-						groups: [dept + " " + courseNum, "courses"],
+						groups: [dept + "_" + courseNum, "courses"],
 						fillStyle: '#000',
 						strokeWidth: 2,
 						x: (days[i] * dayWidth) + (dayWidth/2) + timeOffset, 
@@ -380,21 +445,20 @@
 		</script>
 
 		<script type="text/javascript">
-	// Original JavaScript code by Chirp Internet: www.chirp.com.au
-	// Please acknowledge use of this code by including this header.
-	function getCookie(name)
-	{
-		 var re = new RegExp(name + "=([^;]+)");
-	         var value = re.exec(document.cookie);
-		 return (value != null) ? unescape(value[1]) : null;
-	}
+			// Original JavaScript code by Chirp Internet: www.chirp.com.au
+			// Please acknowledge use of this code by including this header.
+			function getCookie(name) {
+				var re = new RegExp(name + "=([^;]+)");
+			  var value = re.exec(document.cookie);
+				return (value != null) ? unescape(value[1]) : null;
+			}
 
-		var CRNs=[62345, 12345, 12345];
-		var jsonCRNs=JSON.stringify(CRNs);
-		document.cookie="CRNs=" + jsonCRNs; //can also be just +CRNs
-		console.log(document.cookie);
+			var CRNs=[62345, 12345, 12345];
+			var jsonCRNs=JSON.stringify(CRNs);
+			document.cookie="CRNs=" + jsonCRNs; //can also be just +CRNs
+			// console.log(document.cookie);
 
-		console.log(getCookie("CRNs"));
+			// console.log(getCookie("CRNs"));
 
 		</script>
 	<div>

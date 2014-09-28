@@ -21,7 +21,7 @@ body {
 }
 
 .title {
-	/*line-height: 3rem;*/
+	line-height: 2rem;
 	color: white;
 	margin: 0;
 	padding: .5em;
@@ -31,7 +31,7 @@ body {
 
 .spacer {
 	/*position: absolute;*/
-	padding-top: 66px;
+	padding-top: 68px;
 }
 
 .sidebar {
@@ -49,8 +49,32 @@ body {
 }
 
 h2 {
-	padding: 10px 0 16px;
+	padding: 0 0 16px;
 	font-size: 20px !important;
+}
+
+.spacer2 {
+	display: block;
+	min-height: 16px !important;
+}
+
+.course-row {
+	margin: 0 auto;
+	padding-bottom: 1em;
+}
+
+.picked-course {
+	display: inline-block;
+	/*padding: .5em;*/
+	width: 130px;
+	margin-right: 10px;
+	border-radius: 3px;
+	/*margin-bottom: 1em;*/
+}
+
+.picked-course-x {
+	/*height: 33px;*/
+	/*width: 40px;*/
 }
 
 .course-nav {
