@@ -21,10 +21,12 @@ body {
 }
 
 .title {
-	line-height: 3rem;
+	/*line-height: 3rem;*/
 	color: white;
 	margin: 0;
 	padding: .5em;
+	font-weight: 300;
+	/*font-size: 24px;*/
 }
 
 .spacer {
@@ -47,6 +49,7 @@ body {
 }
 
 h2 {
+	padding: 10px 0 16px;
 	font-size: 20px !important;
 }
 
@@ -99,6 +102,9 @@ select option {
 	margin-bottom: 0 auto 1em;
 	width: 180px;
 }
+#submitButton {
+	visibility: hidden;
+}
 
 .calendar {
 	position: relative;
@@ -110,4 +116,13 @@ select option {
 
 .side-spacer {
 	width: 250px;
+}
+
+.button-clear {
+	margin: 0 auto;
+	position: absolute;
+	display: block;
+	bottom: 16px;
+	left: 55px;
+	width: 140px;
 }
