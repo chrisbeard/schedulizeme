@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 
+<!--
+CREDITS
+- Calendar icon downloaded from https://www.iconfinder.com, used under Creative Commons.
+- jCanvas from http://calebevans.me/, licensed under the MIT license.
+-->
+
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -27,7 +33,7 @@
 <body>
 
 	<header class="header clearfix">
-		<h1 class="title">Schedulize Me</h1>
+		<h1 class="title"><img src="icon.png" style="width:2%; height:2%; padding-bottom:10px; -webkit-filter: invert(100%); -moz-filter: invert(100%); "/> Schedulize Me</h1>
 	</header>
 	<section class="sidebar">
 
@@ -38,27 +44,74 @@
 		<div id="course-list"></div>
 		<div id="spacer2"></div>
 
-		<div class="styled-select">
-			<select id="selectDept" class="course-nav">
-			</select>
+		<div id="newClassBlock">
+			<h3 id="newClass" class="sidebaroption">ADD NEW CLASS</h3>
+			<span id="hiddenNew">
+				<div class="styled-select">
+					<select id="selectDept" class="course-nav">
+					</select>
+				</div>
+				<div class="styled-select">
+					<select id="selectCourse" class="course-nav" selected="Course">
+					</select>
+				</div>
+				<div class="styled-select">
+					<select id="selectSection" class="course-nav">
+					</select>
+				</div>
+				<div class="styled-select">
+					<select id="selectLab" class="course-nav">
+					</select>
+				</div>
+				<a href="#" class="btn btn-info" id="submitButton"><i class="icon-white icon-plus"></i>Add</a>
+			</span>
 		</div>
-		<div class="styled-select">
-			<select id="selectCourse" class="course-nav" selected="Course">
-			</select>
+			
+		<div id="customBlock">
+			<h3 id="addCustom" class="sidebaroption">ADD CUSTOM EVENT</h3>
+			<span id="hiddenCustom">
+				<div class="styled-select">
+					<input type="text" id="inputName" placeholder="Name" class="custom-nav"></input>
+				</div>
+				<div class="styled-select">
+					<input type="time" id="inputBeginTime" class="custom-nav" value="00:00:00">
+				</div>
+				to
+				<div class="styled-select">
+					<input type="time" id="inputEndTime" class="custom-nav" value="00:00:00">
+				</div>
+				<div class="styled-select">
+					<input type="text" id="inputLocation" placeholder="Location" class="custom-nav"></input>
+				</div>
+				<a href="#" class="btn btn-info" id="customSubmitButton"><i class="icon-white icon-plus"></i>Add</a>
+			</span>
 		</div>
-		<div class="styled-select">
-			<select id="selectSection" class="course-nav">
-			</select>
+			
+		<div id="downloadBlock">
+			<h3 id="download" class="sidebaroption">DOWNLOAD SCHEDULE</h3>
+			<span id="hiddenDownload">
+				<a href="javascript:generatePDF()" class="button">.pdf version</a><br />
+				.csv version
+			</span>
 		</div>
-		<div class="styled-select">
-			<select id="selectLab" class="course-nav">
-			</select>
-		</div>
-		<a href="#" class="btn btn-success" id="submitButton"><i class="icon-white icon-plus"></i>Add</a>
 
 		<button type="button" class="btn btn-danger btn-small button-clear" onclick="clearEverything()">Clear Selections</button>
 	</section>
+	
+	<script type="text/javascript" src="/jspdf/jspdf.js"></script>
+	<script type="text/javascript" src="/jspdf/jspdf.plugin.standard_fonts_metrics.js"></script> 
+	<script type="text/javascript" src="/jspdf/jspdf.plugin.split_text_to_size.js"></script>               
+	<script type="text/javascript" src="/jspdf/jspdf.plugin.from_html.js"></script>
+	<script type="text/javascript">
+		function generatePDF() {
+			var image = $('canvas').getCanvasImage('png');
+			var doc = new jsPDF("landscape", "mm", "a4");
+			doc.addImage(image, 'PNG', 15, 40, 180, 160);
+			doc.output('dataurl');
+		}
+	</script>
 
+	
 	<!-- Clear selected courses -->
 	<script type="text/javascript">
 		function clearEverything() {
@@ -185,6 +238,7 @@
 			var extension = dept + '&courseNum=' + course;
 			console.log($('#selectSection').val());
 			var section = $('#selectSection').val().substring(5,6);
+            $('#submitButton').css('visibility', 'hidden');
 
 
 			$.get('http://trump6.com/schedulizeme/api/sections.php?dept=' + extension, function(data) {
@@ -229,39 +283,45 @@
 
 	<!-- Send crn to php to add course to schedule -->
 	<script type="text/javascript">
+		var func = function(data) {
+			var sections = JSON.parse(data)[0];
+			var dept = sections["dept"];
+			var courseNum = sections["num"];
+			var crn = sections["crn"];
+			var dayString = sections["days"];
+			var days = [];
+			var daysOfWeek = "MTWRFSU";
+			for (i = 0; i < dayString.length; ++i) {
+				days.push(daysOfWeek.indexOf(dayString[i]));
+			}
+			var location = sections["location"];
+			var beginTimeNum = sections["beginTimeNum"];
+			var endTimeNum = sections["endTimeNum"];
+			var beginTime = sections["beginTime"];
+			var endTime = sections["endTime"];
+			var credits = sections["credits"];
+
+			addToCalendar(dept, courseNum, crn, days, location, beginTimeNum, endTimeNum, beginTime, endTime);
+		}
+		
 		$(submitButton).click(function() {
 			var crnSection = $('#selectSection').val().substring(0,5);
+			cookieAdd(crnSection); //keep track of added classes
 			var crnLab = $('#selectLab').val();
 			if (crnLab != null) {
+				//console.log(crnLab);
+				cookieAdd(crnLab); //keep track of added classes
 				crnLab = crnLab.substring(0,5);
 			}
-			var func = function(data) {
-				var sections = JSON.parse(data)[0];
-				var dept = sections["dept"];
-				var courseNum = sections["num"];
-				var crn = sections["crn"];
-				var dayString = sections["days"];
-				var days = [];
-				var daysOfWeek = "MTWRFSU";
-				for (i = 0; i < dayString.length; ++i) {
-					days.push(daysOfWeek.indexOf(dayString[i]));
-				}
-				var location = sections["location"];
-				var beginTimeNum = sections["beginTimeNum"];
-				var endTimeNum = sections["endTimeNum"];
-				var beginTime = sections["beginTime"];
-				var endTime = sections["endTime"];
-				var credits = sections["credits"];
-
-				addToCalendar(dept, courseNum, crn, days, location, beginTimeNum, endTimeNum, beginTime, endTime);
-			}
 			var group = $('#selectDept').val() + "_" + $('#selectCourse').val();
+			$('canvas').removeLayerGroup(group).drawLayers();
+
 			$('#' + group).remove();
 			$('canvas').removeLayerGroup(group).drawLayers();
 
 			var dept = $('#selectDept').val();
 			var course = $('#selectCourse').val();
-			var content = [ $('<a href="#" class="btn btn-success picked-course">' + group + '</a>'), $('<a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>') ];
+			var content = [ $('<a href="#" class="btn btn-success picked-course">' + $('#selectDept').val() + " " + $('#selectCourse').val() + '</a>'), $('<a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>') ];
 			var container = $('<div id=' + group + ' class="course-row"></div>');
 			$.each(content, function(i,val) {
 			    container.append(val);
@@ -298,12 +358,13 @@
 						}, time);
 					}, time);
 				}, time);
- 			});
+				});
 			content[1].click(function() {
 				$('canvas').removeLayerGroup(group).drawLayers();
 				container.remove();
-			});
+		});
 
+			//console.log(group);
 			$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnSection, func);
 			if (crnLab != null) {
 				$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + crnLab, func);
@@ -311,10 +372,40 @@
 		});
 	</script>
 
+	<!-- cookie prep -->
 	<script type="text/javascript">
-		$().click(function() {
+	var fullList=[];
 
-		});
+	//check if cookie exists
+	function readCookie(name) {
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(','); //was split by ;
+		for(var i=0;i < ca.length;i++) {
+			var c = ca[i];
+			while (c.charAt(0)==' ') c = c.substring(1,c.length);
+			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+		}
+		return null;
+	}
+
+	var cookieInput = readCookie("CRNs");
+	console.log("poop" + cookieInput);
+	
+	if (!!cookieInput) {
+		console.log(cookieInput.length);
+	for(var i = 0; i < cookieInput.length/5; i++) {
+		console.log(cookieInput[i]);
+		$.get('http://trump6.com/schedulizeme/api/crn.php?crn=' + cookieInput[i], func);
+
+	} }
+
+	function cookieAdd(crn) {
+		fullList.push(crn);
+		fullJSON = JSON.stringify(fullList);
+		document.cookie="CRNs=" + fullJSON;
+		console.log(document.cookie);
+	}
+
 	</script>
 
 	<!-- CREATE CANVAS -->
@@ -396,7 +487,6 @@
 				} else {
 					j += ' am';
 				}
-				<!-- left side -->
 				$('canvas').drawText({
 					layer: true,
 					fillStyle: numberColor,
@@ -413,14 +503,14 @@
 
 				// POSSIBLE COLORS FOR CLASSES
 				var colors = ["#e8efe8", "#faf1a2", "#ffe19b", "#e9d0e5", "#8ca4d4", "#bae3f7", "#c1e4dd", "#c5d9a6", "#e74c3c"];
-				var color = Math.floor((Math.random() * 9));
+				var color = colors[Math.floor((Math.random() * 9))];
 				
 				for (i = 0; i < days.length; ++i) {
 					$('canvas').drawRect({
 						layer: true,
 						name: crn + days[i], // unique to this specific block
 						groups: [dept + "_" + courseNum, "courses"], // should be dept + num because that's unique to the group of courses when deleting an entire course
-						fillStyle: colors[color],
+						fillStyle: color,
 						x: days[i] * dayWidth + separator + timeOffset, 
 						y: (calHeight-(13*hourHeight)) + (beginTimeNum-480),
 						fromCenter: false,
@@ -442,6 +532,7 @@
 					});
 				}
 			}
+			<!--window.open($('canvas').getCanvasImage('png'));-->
 		</script>
 
 		<script type="text/javascript">
@@ -461,7 +552,7 @@
 			// console.log(getCookie("CRNs"));
 
 		</script>
-	<div>
+	</div>
 
 </body>
 </html>

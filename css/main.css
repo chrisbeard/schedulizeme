@@ -76,6 +76,10 @@ h2 {
 	/*height: 33px;*/
 	/*width: 40px;*/
 }
+h3 {
+	padding: 10px 0 16px;
+	font-size: 18px !important;
+}
 
 .course-nav {
 	margin-bottom: 1em;
@@ -91,6 +95,17 @@ h2 {
 	height: 32px;
 	padding: 5px;
 	width: 180px;
+	-webkit-appearance: none;
+}
+.custom-nav{
+	background: transparent;
+	border: 1px solid #bdc3c7;
+	border-radius: 3px;
+	font-size: 16px;
+	height: 32px;
+	padding: 5px;
+	width: 180px;
+	margin:5px;
 	-webkit-appearance: none;
 }
 
@@ -128,6 +143,7 @@ select option {
 }
 #submitButton {
 	visibility: hidden;
+	margin-bottom:10px;
 }
 
 .calendar {
@@ -149,4 +165,30 @@ select option {
 	bottom: 16px;
 	left: 55px;
 	width: 140px;
+}
+
+.sidebaroption {
+	background: #d2d2d2;
+	border: 1px solid #c9c9c9;
+	padding: 15px;
+	margin: 0px;
+}
+
+.sidebaroption:hover {
+	background:#eeeeee;
+}
+
+.visible {
+	display: block;
+	background-color: #DDDDDD;
+}
+
+#hiddenDownload, #hiddenCustom, #hiddenNew {
+	display:none;
+	margin:10px;
+}
+
+#downloadBlock:hover #hiddenDownload, #customBlock:hover #hiddenCustom, #newClassBlock:hover #hiddenNew {
+	display:block;
+	visibility:visible;
 }
