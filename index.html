@@ -40,26 +40,73 @@ CREDITS
 		<div class="spacer"></div>
 
 			<h2>Build your schedule.</h2>
-			<div class="styled-select">
-				<select id="selectDept" class="course-nav">
-				</select>
+			
+			<div id="newClassBlock">
+				<h3 id="newClass" class="sidebaroption">ADD NEW CLASS</h3>
+				<span id="hiddenNew">
+					<div class="styled-select">
+						<select id="selectDept" class="course-nav">
+						</select>
+					</div>
+					<div class="styled-select">
+						<select id="selectCourse" class="course-nav" selected="Course">
+						</select>
+					</div>
+					<div class="styled-select">
+						<select id="selectSection" class="course-nav">
+						</select>
+					</div>
+					<div class="styled-select">
+						<select id="selectLab" class="course-nav">
+						</select>
+					</div>
+					<a href="#" class="btn btn-info" id="submitButton"><i class="icon-white icon-plus"></i>Add</a>
+				</span>
 			</div>
-			<div class="styled-select">
-				<select id="selectCourse" class="course-nav" selected="Course">
-				</select>
+			
+			<div id="customBlock">
+				<h3 id="addCustom" class="sidebaroption">ADD CUSTOM EVENT</h3>
+				<span id="hiddenCustom">
+					<div class="styled-select">
+						<input type="text" id="inputName" value="Name" class="custom-nav"></input>
+					</div>
+					<div class="styled-select">
+						<input type="time" id="inputBeginTime" class="custom-nav" value="00:00:00">
+					</div>
+					to
+					<div class="styled-select">
+						<input type="time" id="inputEndTime" class="custom-nav" value="00:00:00">
+					</div>
+					<div class="styled-select">
+						<input type="text" id="inputLocation" value="Location" class="custom-nav"></input>
+					</div>
+					<a href="#" class="btn btn-info" id="customSubmitButton"><i class="icon-white icon-plus"></i>Add</a>
+				</span>
 			</div>
-			<div class="styled-select">
-				<select id="selectSection" class="course-nav">
-				</select>
+			
+			<div id="downloadBlock">
+				<h3 id="download" class="sidebaroption">DOWNLOAD SCHEDULE</h3>
+				<span id="hiddenDownload">
+					<a href="javascript:generatePDF()" class="button">.pdf version</a><br />
+					.csv version
+				</span>
 			</div>
-			<div class="styled-select">
-				<select id="selectLab" class="course-nav">
-				</select>
-			</div>
-			<a href="#" class="btn btn-info" id="submitButton"><i class="icon-white icon-plus"></i>Add</a>
 
 			<button type="button" class="btn btn-danger btn-small button-clear" onclick="clearEverything()">Clear Selections</button>
 	</section>
+	
+	<script type="text/javascript" src="/jspdf/jspdf.js"></script>
+	<script type="text/javascript" src="/jspdf/jspdf.plugin.standard_fonts_metrics.js"></script> 
+	<script type="text/javascript" src="/jspdf/jspdf.plugin.split_text_to_size.js"></script>               
+	<script type="text/javascript" src="/jspdf/jspdf.plugin.from_html.js"></script>
+	<script type="text/javascript">
+		function generatePDF() {
+			var image = $('canvas').getCanvasImage('png');
+			var doc = new jsPDF("landscape", "mm", "a4");
+			doc.addImage(image, 'PNG', 15, 40, 180, 160);
+			doc.output('dataurl');
+		}
+	</script>
 
 	<!-- Clear selected courses -->
 	<script type="text/javascript">
@@ -382,6 +429,7 @@ CREDITS
 					});
 				}
 			}
+			<!--window.open($('canvas').getCanvasImage('png'));-->
 		</script>
 
 		<script type="text/javascript">
