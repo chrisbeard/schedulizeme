@@ -99,6 +99,9 @@ select option {
 	margin-bottom: 0 auto 1em;
 	width: 180px;
 }
+#submitButton {
+	visibility: hidden;
+}
 
 .calendar {
 	position: relative;
@@ -110,4 +113,15 @@ select option {
 
 .side-spacer {
 	width: 250px;
+}
+
+.button-clear {
+	/*margin: 0 auto 1em;*/
+	margin: 0 auto;
+	/*padding: 2em;*/
+	position: absolute;
+	display: block;
+	bottom: 16px;
+	left: 55px;
+	width: 140px;
 }

@@ -52,20 +52,32 @@
 			</div>
 			<a href="#" class="btn btn-info" id="submitButton"><i class="icon-white icon-plus"></i>Add</a>
 
-			<button type="button" class="btn btn-primary" onclick="clearEverything()" style="position:absolute;right:50%;bottom:9px;">Clear Classes</button>
+			<button type="button" class="btn btn-primary button-clear" onclick="clearEverything()">Clear Selections</button>
 	</section>
 
-	<!-- Empty everything for starting over -->
+	<!-- Clear selected courses -->
 	<script type="text/javascript">
-	function clearEverything() {
-	$('canvas').removeLayerGroup("courses").drawLayers();
-	}
+		function clearEverything() {
+			$('canvas').removeLayerGroup("courses").drawLayers();
+			
+			// Not going to reset the search fields
+			// $('#selectCourse').css('visibility', 'hidden');
+			// $('#selectSection').css('visibility', 'hidden');
+			// $('#submitButton').css('visibility', 'hidden');
+			// $('#selectLab').css('display', 'none');
+			// $('#selectCourse').empty();
+			// $('#selectSection').empty();
+			// $('#selectLab').empty();
+		}
 	</script>
 
 	<!-- Populate department list -->  
 	<script type="text/javascript">
 		$.get('http://trump6.com/schedulizeme/api/dept.php', function(data) {
+			$('#selectCourse').css('visibility', 'hidden');
+			$('#selectSection').css('visibility', 'hidden');
 			$('#submitButton').css('visibility', 'hidden');
+			$('#selectLab').css('display', 'none');
 			$('#selectCourse').empty();
 			$('#selectSection').empty();
 			$('#selectLab').empty();
