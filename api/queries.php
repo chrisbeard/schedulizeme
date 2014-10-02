@@ -21,5 +21,8 @@ $getDays = "SELECT days FROM sections WHERE crn=:crn";
 
 $emailData = "SELECT title, days, beginTime, endTime, location FROM sections where crn=:crn";
 
+$store = "insert into sessions (identifier, crnJSON) values (:identifier, :crnJSON)";
+$load = "SELECT crnJSON FROM sessions where identifier=:identifier";
+
 ?>
 
