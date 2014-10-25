@@ -531,10 +531,12 @@ CREDITS
 			if ($('#Sunday').is(":checked")) { days.push(6);}
 			console.log('days: ' + days);
 
-			var beginTimeNum = parseInt(beginTime.substring(0,2)) * 60 + parseInt(beginTime.substring(3,5));
+			var beginTimeNum = Math.ceil(parseInt(beginTime.substring(0,2)) * 60 + parseInt(beginTime.substring(3,5)));
 			var endTimeNum = parseInt(endTime.substring(0,2)) * 60 + parseInt(endTime.substring(3,5));
 
-			var hr = (beginTimeNum/60 % 12);
+			var hr = Math.floor((beginTimeNum/60 % 12));
+			// console.log(beginTimeNum);
+			// console.log(hr);
 			if (hr == 0) {
 				hr = 12;
 			}
@@ -542,7 +544,7 @@ CREDITS
 			var tod = beginTimeNum >= 720 ? 'pm' : 'am';
 			beginTime = (hr < 10 ? '0' : '') + hr + ':' + (min < 10 ? '0' : '') + min + ' ' + tod;
 
-			var hr = (endTimeNum/60 % 12);
+			var hr = Math.floor((endTimeNum/60 % 12));
 			if (hr == 0) {
 				hr = 12;
 			}
@@ -550,8 +552,8 @@ CREDITS
 			var tod = endTimeNum >= 720 ? 'pm' : 'am';
 			endTime = (hr < 10 ? '0' : '') + hr + ':' + (min < 10 ? '0' : '') + min + ' ' + tod;
 
-			console.log(beginTime + '   -   ' + beginTimeNum);
-			console.log(endTime + '   -   ' + endTimeNum);
+			// console.log(beginTime + '   -   ' + beginTimeNum);
+			// console.log(endTime + '   -   ' + endTimeNum);
 			
 			addToCalendar(group, "", group, days, location, beginTimeNum, endTimeNum, beginTime, endTime);
 		});
@@ -594,7 +596,7 @@ CREDITS
 			var calWidth = 1450, calHeight = 850;
 			var dayWidth = 200;
 			var hourHeight = 60;
-      var separator = 5;
+      		var separator = 5;
 			var timeOffset = 50;
 			
 			// VERTICAL LINES
