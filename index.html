@@ -485,7 +485,7 @@ CREDITS
 				checkForConflicts();
 			});
 
-			$.get('http://trump6.com/schedulizeme/static/' + crnSection + '.html',  function(data) {
+			$.get('static/' + crnSection + '.html',  function(data) {
 				var sections = JSON.parse(data);
 				var beginTime = sections[0]["beginTime"];
 				var endTime = sections[0]["endTime"];
@@ -499,7 +499,7 @@ CREDITS
 				func(data);
 			});
 			if (crnLab != null) {
-				$.get('http://trump6.com/schedulizeme/static/' + crnLab + '.html', function(data) {
+				$.get('static/' + crnLab + '.html', function(data) {
 					var sections = JSON.parse(data);
 					container.data("beginTimeLab", sections[0]["beginTimeLab"]);
 					container.data("endTimeLab", sections[0]["endTimeLab"]);
