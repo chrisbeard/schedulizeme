@@ -185,7 +185,7 @@ CREDITS
 
 	<!-- Populate department list -->  
 	<script type="text/javascript">
-		$.get('http://trump6.com/schedulizeme/legacyapi/dept.php', function(data) {
+		$.get('legacyapi/dept.php', function(data) {
 			$('#selectCourse').css('visibility', 'hidden');
 			$('#selectSection').css('visibility', 'hidden');
 			$('#submitButton').css('visibility', 'hidden');
@@ -225,7 +225,7 @@ CREDITS
 			$('#selectSection').empty();
 			$('#selectLab').empty();
 			var dept = $('#selectDept').val();
-			$.get('http://trump6.com/schedulizeme/legacyapi/courses.php?dept=' + dept, function(data) {
+			$.get('legacyapi/courses.php?dept=' + dept, function(data) {
 				var courses = JSON.parse(data);
 				var select = document.getElementById("selectCourse");
 				var firstElement = document.createElement("option");
@@ -259,7 +259,7 @@ CREDITS
 			var dept = $('#selectDept').val();
 			var course = $('#selectCourse').val();
 			var extension = dept + '&courseNum=' + course;
-			$.get('http://trump6.com/schedulizeme/legacyapi/sections.php?dept=' + extension, function(data) {
+			$.get('legacyapi/sections.php?dept=' + extension, function(data) {
 				var sections = JSON.parse(data);
 				var select = document.getElementById("selectSection");
 				var firstElement = document.createElement("option");
@@ -294,7 +294,7 @@ CREDITS
 			var section = $('#selectSection').val().substring(5,6);
             $('#submitButton').css('visibility', 'hidden');
 
-			$.get('http://trump6.com/schedulizeme/legacyapi/sections.php?dept=' + extension, function(data) {
+			$.get('legacyapi/sections.php?dept=' + extension, function(data) {
 
 				var sections = JSON.parse(data);
 				var select = document.getElementById("selectLab");
@@ -485,7 +485,7 @@ CREDITS
 				checkForConflicts();
 			});
 
-			$.get('static/' + crnSection + '.html',  function(data) {
+			$.get('legacyapi/crn.php?crn=' + crnSection,  function(data) {
 				var sections = JSON.parse(data);
 				var beginTime = sections[0]["beginTime"];
 				var endTime = sections[0]["endTime"];
@@ -499,7 +499,7 @@ CREDITS
 				func(data);
 			});
 			if (crnLab != null) {
-				$.get('static/' + crnLab + '.html', function(data) {
+				$.get('legacyapi/crn.php?crn=' + crnLab, function(data) {
 					var sections = JSON.parse(data);
 					container.data("beginTimeLab", sections[0]["beginTimeLab"]);
 					container.data("endTimeLab", sections[0]["endTimeLab"]);
@@ -575,7 +575,7 @@ CREDITS
 		console.log(cookieInput.length);
 		for(var i = 0; i < cookieInput.length; i++) {
 			console.log(cookieInput[i]);
-			$.get('http://trump6.com/schedulizeme/static/' + cookieInput[i] + '.html', func);
+			$.get('legacyapi/crn.php?crn=' + cookieInput[i], func);
 		}
 	}
 
